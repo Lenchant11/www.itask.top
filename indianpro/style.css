@@ -513,7 +513,7 @@ header {
 }
 
 /* 闪烁动画 */
-@keyframes pulse-fast {
+@keyframes pulse {
   0% {
     transform: scale(0.9);
     opacity: 0.9;
@@ -625,5 +625,6 @@ footer {
   }
 
 }
+
 
 
