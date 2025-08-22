@@ -13,8 +13,7 @@
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17462482672">
-  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17462482672"></script>
   <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -33,6 +32,75 @@
         'currency': 'USD',
         'event_callback': callback
     });
+    return false;
+  }
+
+  // WhatsApp账号池
+  const waAccounts = [
+    "15878705981","18255332835","18255334002","12367058179",
+    "18255331839","18255330916","18738001809","18737710830",
+    "12492022304","17789109128","601128237563","8801750196681"
+  ];
+
+  // 预填话术池
+const waMessages = [
+  "Hi, I want tasks today.",
+  "Hello, how do I start?",
+  "Can you send me tasks?",
+  "I want to join tasks.",
+  "How much can I earn?",
+  "Need guidance to start.",
+  "Assign me tasks now.",
+  "Hello, ready for tasks.",
+  "Explain how to start?",
+  "Is any registration fee required?",
+  "I want this job.",
+  "Looking for work today.",
+  "Tell me earning details.",
+  "Ready to start working.",
+  "How to claim first task?",
+  "Share tasks I can do.",
+  "Hello, want to earn rewards.",
+  "Interested in completing tasks.",
+  "Guide me to register tasks.",
+  "Can I earn using my phone?",
+  "Assign new tasks today.",
+  "How many hours per day?",
+  "Where is the work located?",
+  "Help me start online.",
+  "Ready to do tasks.",
+  "Explain how it works.",
+  "Want to earn extra income.",
+  "Assign tasks I can complete.",
+  "I am new, guide me.",
+  "How to join platform?",
+  "Provide instructions, I’m ready.",
+  "Interested in tasks.",
+  "Can I work from home?",
+  "Complete tasks for rewards.",
+  "Available tasks today?",
+  "Need guidance for tasks.",
+  "How to get paid?",
+  "Is it remote work?",
+  "Assign new tasks now.",
+  "Instructions to start earning.",
+  "Do I need laptop for tasks?",
+  "Help me start today."
+  ];
+
+  function getRandomItem(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function getRandomWaLink() {
+    const account = getRandomItem(waAccounts);
+    const message = encodeURIComponent(getRandomItem(waMessages));
+    return `https://wa.me/${account}?text=${message}`;
+  }
+
+  function handleWaClick() {
+    const link = getRandomWaLink();
+    gtag_report_conversion(link);
     return false;
   }
   </script>
@@ -73,8 +141,8 @@
       <h1 class="hero-title">Test Products & Earn Rewards in India</h1>
       <p class="hero-subtitle">Join our community of product testers and get rewarded for your honest feedback</p>
       <div class="hero-cta">
-        <a href="https://wa.me/16139020957"  target="_blank" class="btn btn-primary" onclick="return gtag_report_conversion('https://wa.me/16139020957')">Get Started</a>
-        <a href="https://wa.me/16139020957"  target="_blank" class="btn btn-outline" onclick="return gtag_report_conversion('https://wa.me/16139020957')">Learn More</a>
+        <a href="https://wa.me/15878705981" target="_blank" class="btn btn-primary" onclick="return handleWaClick()">Get Started</a>
+        <a href="https://wa.me/15878705981" target="_blank" class="btn btn-outline" onclick="return handleWaClick()">Learn More</a>
       </div>
     </div>
   </section>
@@ -89,13 +157,13 @@
           <div class="step-icon">📦</div>
           <div class="step-content">
             <h3><span class="step-number">1</span> Contact Support</h3>
-            <p>Click the WhatsAPP button to chat with support</p>
+            <p>Click the green button to chat with support</p>
           </div>
         </div>
         
         <div class="step-item">
-          <div class="step-icon">🔍</div>
-           <div class="step-content">
+          <div class="step-icon">📝</div>
+          <div class="step-content">
             <h3><span class="step-number">2</span> Complete Tasks</h3>
             <p>Get tasks from the platform and finish them</p>
           </div>
@@ -180,7 +248,7 @@
       <p class="cta-subtitle">
         Join thousands of happy testers across India and get access to exclusive product testing opportunities.
       </p>
-      <a href="https://wa.me/16139020957" target="_blank" class="btn btn-secondary cta-btn" onclick="return gtag_report_conversion('https://wa.me/16139020957')">
+      <a href="https://wa.me/15878705981" target="_blank" class="btn btn-secondary cta-btn" onclick="return handleWaClick()">
         Join Now via WhatsApp
       </a>
     </div>
@@ -201,7 +269,7 @@
   </footer>
 
   <!-- 浮动WhatsApp按钮 -->
-  <a href="https://wa.me/16139020957" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp" onclick="return gtag_report_conversion('https://wa.me/16139020957')">
+  <a href="https://wa.me/15878705981" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp" onclick="return handleWaClick()">
     <span class="whatsapp-icon">💬</span>
     <span class="notification-dot"></span>
   </a>
