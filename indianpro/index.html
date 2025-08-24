@@ -21,31 +21,14 @@
     gtag('js', new Date());
     gtag('config', 'AW-17462482672');
 
-    function gtag_report_conversion(url) {
-      var callback = function () {
-        if (typeof(url) != 'undefined') {
-          window.location.href = url;
-        }
-      };
-      gtag('event', 'conversion', {
-          'send_to': 'AW-17462482672/RIMDCN-A_4QbEPCt4YZB',
-          'value': 1.0,
-          'currency': 'USD',
-          'event_callback': callback
-      });
-      return false;
-    }
-
     // WhatsApp account pool
     const waAccounts = [
       "17097058838","14388020153","14383006058","18255332588",
       "18078041604","12367057996","14385006637","15817065965"
     ];
 
-    // Fixed WhatsApp message
     const fixedMessage = encodeURIComponent("I want to join, how can I earn several thousand INR?");
 
-    // Cookie functions
     function setCookie(name, value, days) {
       const d = new Date();
       d.setTime(d.getTime() + (days*24*60*60*1000));
@@ -58,7 +41,6 @@
       return null;
     }
 
-    // Get random WhatsApp account
     function getRandomAccount() {
       return waAccounts[Math.floor(Math.random() * waAccounts.length)];
     }
@@ -68,31 +50,42 @@
       return `https://wa.me/${account}?text=${fixedMessage}`;
     }
 
-    // Age confirmation modal logic
+    // 异步上报 Google 转化事件，避免页面卸载丢失
+    function reportConversionAsync(url) {
+      gtag('event', 'conversion', {
+        'send_to': 'AW-17462482672/RIMDCN-A_4QbEPCt4YZB',
+        'value': 1.0,
+        'currency': 'USD',
+        'event_callback': function() {
+          if (typeof(url) !== 'undefined') {
+            window.location.href = url;
+          }
+        }
+      });
+    }
+
+    // 点击按钮逻辑
     function handleWaClick() {
       const ageStatus = getCookie("userAgeStatus");
       const waLink = getWaLink();
 
       if (ageStatus === "under24") {
-        alert("Sorry, this reward program is only for users aged 24 and above in India.");
-        return false;
+        return false; // <24，不跳转、不上报、不提示
       } else if (ageStatus === "24orAbove") {
-        gtag_report_conversion(waLink);
+        reportConversionAsync(waLink);
         return false;
       } else {
-        // Show custom modal
+        // 显示年龄选择弹窗
         const modal = document.getElementById("ageModal");
-        modal.style.display = "flex"; // show modal
-        // Set click handlers
+        modal.style.display = "flex";
         document.getElementById("btnAbove24").onclick = function() {
           setCookie("userAgeStatus", "24orAbove", 30);
           modal.style.display = "none";
-          gtag_report_conversion(waLink);
+          reportConversionAsync(waLink);
         };
         document.getElementById("btnUnder24").onclick = function() {
           setCookie("userAgeStatus", "under24", 30);
           modal.style.display = "none";
-          alert("Sorry, this reward program is only for users aged 24 and above in India.");
         };
         return false;
       }
@@ -100,11 +93,10 @@
   </script>
 
   <style>
-    /* 简单模态框样式 */
     #ageModal {
       display: none;
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top:0; left:0; right:0; bottom:0;
       background: rgba(0,0,0,0.6);
       justify-content: center;
       align-items: center;
@@ -120,105 +112,109 @@
     }
     #ageModal button {
       margin: 10px;
-      padding: 10px 20px;
+      padding: 12px 0;
       font-size: 16px;
       cursor: pointer;
       border-radius: 5px;
       border: none;
+      width: 45%; /* 宽度一致 */
     }
     #btnAbove24 { background-color: #28a745; color: #fff; }
     #btnUnder24 { background-color: #dc3545; color: #fff; }
+    /* 居中两个按钮 */
+    #ageModal .button-wrapper {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
   </style>
 </head>
-
 <body>
-  <!-- 导航栏 -->
-  <header>
-    <div class="container">
-      <nav class="navbar">
-        <a href="#" class="logo">
-          <img src="/images/logo.png" alt="Itask Logo" class="logo-icon">
-          <span>ITask India</span>
-        </a>
-        <div class="desktop-nav">
-          <a href="#how-it-works">How It Works</a>
-          <a href="/about.html" target="_blank">About Us</a>
-          <a href="/contact.html" target="_blank">Contact Us</a>
-          <a href="/faq.html" target="_blank">FAQ</a>
-        </div>
-        <button class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-nav">☰</button>
-      </nav>
-      <div id="mobile-nav" class="mobile-nav">
+
+<header>
+  <div class="container">
+    <nav class="navbar">
+      <a href="#" class="logo">
+        <img src="/images/logo.png" alt="Itask Logo" class="logo-icon">
+        <span>ITask India</span>
+      </a>
+      <div class="desktop-nav">
         <a href="#how-it-works">How It Works</a>
         <a href="/about.html" target="_blank">About Us</a>
         <a href="/contact.html" target="_blank">Contact Us</a>
         <a href="/faq.html" target="_blank">FAQ</a>
       </div>
+      <button class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-nav">☰</button>
+    </nav>
+    <div id="mobile-nav" class="mobile-nav">
+      <a href="#how-it-works">How It Works</a>
+      <a href="/about.html" target="_blank">About Us</a>
+      <a href="/contact.html" target="_blank">Contact Us</a>
+      <a href="/faq.html" target="_blank">FAQ</a>
     </div>
-  </header>
+  </div>
+</header>
 
-  <!-- 英雄区 -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1 class="hero-title">Test Products & Earn Rewards in India</h1>
-      <p class="hero-subtitle">Earn from ₹1000 to ₹8000 by Completing Easy Tasks with Mobile</p>
-      <div class="hero-cta">
-        <a href="#" class="btn btn-primary" onclick="return handleWaClick()">Get Started</a>
-        <a href="#" class="btn btn-outline" onclick="return handleWaClick()">Learn More</a>
-      </div>
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">Test Products & Earn Rewards in India</h1>
+    <p class="hero-subtitle">Earn from ₹1000 to ₹8000 by Completing Easy Tasks with Mobile</p>
+    <div class="hero-cta">
+      <a href="#" class="btn btn-primary" onclick="return handleWaClick()">Get Started</a>
+      <a href="#" class="btn btn-outline" onclick="return handleWaClick()">Learn More</a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Steps板块 -->
-  <section id="how-it-works" class="section">
-    <div class="container">
-      <h2 class="section-title">How It Works</h2>
-      <div class="steps">
-        <div class="step-item"><div class="step-icon">📦</div><div class="step-content"><h3><span class="step-number">1</span> Contact Support</h3><p>Click the green button to chat with support</p></div></div>
-        <div class="step-item"><div class="step-icon">📝</div><div class="step-content"><h3><span class="step-number">2</span> Complete Tasks</h3><p>Get tasks from the platform and finish them</p></div></div>
-        <div class="step-item"><div class="step-icon">💰</div><div class="step-content"><h3><span class="step-number">3</span> Get Rewarded</h3><p>Receive your thank-you reward after review approval</p></div></div>
-      </div>
+<section id="how-it-works" class="section">
+  <div class="container">
+    <h2 class="section-title">How It Works</h2>
+    <div class="steps">
+      <div class="step-item"><div class="step-icon">📦</div><div class="step-content"><h3><span class="step-number">1</span> Contact Support</h3><p>Click the green button to chat with support</p></div></div>
+      <div class="step-item"><div class="step-icon">📝</div><div class="step-content"><h3><span class="step-number">2</span> Complete Tasks</h3><p>Get tasks from the platform and finish them</p></div></div>
+      <div class="step-item"><div class="step-icon">💰</div><div class="step-content"><h3><span class="step-number">3</span> Get Rewarded</h3><p>Receive your thank-you reward after review approval</p></div></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- CTA区 -->
-  <section class="section cta-section">
-    <div class="container">
-      <h2 class="cta-title">Ready to Start Testing?</h2>
-      <p class="cta-subtitle">Join thousands of happy testers across India and get access to exclusive product testing opportunities.</p>
-      <a href="#" class="btn btn-secondary cta-btn" onclick="return handleWaClick()">Join Now via WhatsApp</a>
+<section class="section cta-section">
+  <div class="container">
+    <h2 class="cta-title">Ready to Start Testing?</h2>
+    <p class="cta-subtitle">Join thousands of happy testers across India and get access to exclusive product testing opportunities.</p>
+    <a href="#" class="btn btn-secondary cta-btn" onclick="return handleWaClick()">Join Now via WhatsApp</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="/privacy.html" target="_blank">Privacy Policy</a>
+      <a href="/userterms.html" target="_blank">User Manual</a>
+      <a href="/disclaimer.html" target="_blank">Disclaimer</a>
     </div>
-  </section>
-
-  <!-- 页脚 -->
-  <footer>
-    <div class="container">
-      <div class="footer-links">
-        <a href="/privacy.html" target="_blank">Privacy Policy</a>
-        <a href="/userterms.html" target="_blank">User Manual</a>
-        <a href="/disclaimer.html" target="_blank">Disclaimer</a>
-      </div>
-      <div class="copyright">
-        <p>© 2025 Itask User-Club. All rights reserved.</p>
-      </div>
+    <div class="copyright">
+      <p>© 2025 Itask User-Club. All rights reserved.</p>
     </div>
-  </footer>
+  </div>
+</footer>
 
-  <!-- 浮动WhatsApp按钮 -->
-  <a href="#" class="whatsapp-float" aria-label="Chat on WhatsApp" onclick="return handleWaClick()">
-    <span class="whatsapp-icon">💬</span>
-    <span class="notification-dot"></span>
-  </a>
+<!-- 浮动WhatsApp按钮 -->
+<a href="#" class="whatsapp-float" aria-label="Chat on WhatsApp" onclick="return handleWaClick()">
+  <span class="whatsapp-icon">💬</span>
+  <span class="notification-dot"></span>
+</a>
 
-  <!-- 年龄选择模态框 -->
-  <div id="ageModal">
-    <div class="modal-content">
-      <p>This reward program is only for users aged 24 and above in India.</p>
+<!-- 年龄选择模态框 -->
+<div id="ageModal">
+  <div class="modal-content">
+    <p>This program is only available for users in India. Please select your age, and we will assign a customer support representative.</p>
+    <div class="button-wrapper">
       <button id="btnAbove24">I am 24 or above</button>
       <button id="btnUnder24">I am under 24</button>
     </div>
   </div>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
