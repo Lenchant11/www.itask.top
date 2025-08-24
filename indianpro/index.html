@@ -79,12 +79,12 @@
         const modal = document.getElementById("ageModal");
         modal.style.display = "flex";
         document.getElementById("btnAbove24").onclick = function() {
-          setCookie("userAgeStatus", "24orAbove", 30);
+          setCookie("userAgeStatus", "24orAbove", 1);
           modal.style.display = "none";
           reportConversionAsync(waLink);
         };
         document.getElementById("btnUnder24").onclick = function() {
-          setCookie("userAgeStatus", "under24", 30);
+          setCookie("userAgeStatus", "under24", 1);
           modal.style.display = "none";
         };
         return false;
