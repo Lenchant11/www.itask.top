@@ -12,98 +12,125 @@
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17462482672"></script>
   <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'AW-17462482672');
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-17462482672');
 
-  function gtag_report_conversion(url) {
-    var callback = function () {
-      if (typeof(url) != 'undefined') {
-        window.location.href = url;
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.location.href = url;
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': 'AW-17462482672/RIMDCN-A_4QbEPCt4YZB',
+          'value': 1.0,
+          'currency': 'USD',
+          'event_callback': callback
+      });
+      return false;
+    }
+
+    // WhatsApp account pool
+    const waAccounts = [
+      "17097058838","14388020153","14383006058","18255332588",
+      "18078041604","12367057996","14385006637","15817065965"
+    ];
+
+    // Fixed WhatsApp message
+    const fixedMessage = encodeURIComponent("I want to join, how can I earn several thousand INR?");
+
+    // Cookie functions
+    function setCookie(name, value, days) {
+      const d = new Date();
+      d.setTime(d.getTime() + (days*24*60*60*1000));
+      document.cookie = name + "=" + value + ";path=/;expires=" + d.toUTCString();
+    }
+
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      if (match) return match[2];
+      return null;
+    }
+
+    // Get random WhatsApp account
+    function getRandomAccount() {
+      return waAccounts[Math.floor(Math.random() * waAccounts.length)];
+    }
+
+    function getWaLink() {
+      const account = getRandomAccount();
+      return `https://wa.me/${account}?text=${fixedMessage}`;
+    }
+
+    // Age confirmation modal logic
+    function handleWaClick() {
+      const ageStatus = getCookie("userAgeStatus");
+      const waLink = getWaLink();
+
+      if (ageStatus === "under24") {
+        alert("Sorry, this reward program is only for users aged 24 and above in India.");
+        return false;
+      } else if (ageStatus === "24orAbove") {
+        gtag_report_conversion(waLink);
+        return false;
+      } else {
+        // Show custom modal
+        const modal = document.getElementById("ageModal");
+        modal.style.display = "flex"; // show modal
+        // Set click handlers
+        document.getElementById("btnAbove24").onclick = function() {
+          setCookie("userAgeStatus", "24orAbove", 30);
+          modal.style.display = "none";
+          gtag_report_conversion(waLink);
+        };
+        document.getElementById("btnUnder24").onclick = function() {
+          setCookie("userAgeStatus", "under24", 30);
+          modal.style.display = "none";
+          alert("Sorry, this reward program is only for users aged 24 and above in India.");
+        };
+        return false;
       }
-    };
-    gtag('event', 'conversion', {
-        'send_to': 'AW-17462482672/RIMDCN-A_4QbEPCt4YZB',
-        'value': 1.0,
-        'currency': 'USD',
-        'event_callback': callback
-    });
-    return false;
-  }
-
-  // WhatsApp账号池
-  const waAccounts = [
-    "17097058838","14388020153","14383006058","18255332588",
-    "18078041604","12367057996","14385006637","15817065965"
-  ];
-
-  // 预填话术池
-const waMessages = [
-  "Hi, I want tasks today.",
-  "Hello, how do I start?",
-  "Can you send me tasks?",
-  "I want to join tasks.",
-  "How much can I earn?",
-  "Need guidance to start.",
-  "Assign me tasks now.",
-  "Hello, ready for tasks.",
-  "Explain how to start?",
-  "Is any registration fee required?",
-  "I want this job.",
-  "Looking for work today.",
-  "Tell me earning details.",
-  "Ready to start working.",
-  "How to claim first task?",
-  "Share tasks I can do.",
-  "Hello, want to earn rewards.",
-  "Interested in completing tasks.",
-  "Guide me to register tasks.",
-  "Can I earn using my phone?",
-  "Assign new tasks today.",
-  "How many hours per day?",
-  "Where is the work located?",
-  "Help me start online.",
-  "Ready to do tasks.",
-  "Explain how it works.",
-  "Want to earn extra income.",
-  "Assign tasks I can complete.",
-  "I am new, guide me.",
-  "How to join platform?",
-  "Provide instructions, I’m ready.",
-  "Interested in tasks.",
-  "Can I work from home?",
-  "Complete tasks for rewards.",
-  "Available tasks today?",
-  "Need guidance for tasks.",
-  "How to get paid?",
-  "Is it remote work?",
-  "Assign new tasks now.",
-  "Instructions to start earning.",
-  "Do I need laptop for tasks?",
-  "Help me start today."
-  ];
-
-  function getRandomItem(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
-
-  function getRandomWaLink() {
-    const account = getRandomItem(waAccounts);
-    const message = encodeURIComponent(getRandomItem(waMessages));
-    return `https://wa.me/${account}?text=${message}`;
-  }
-
-  function handleWaClick() {
-    const link = getRandomWaLink();
-    gtag_report_conversion(link);
-    return false;
-  }
+    }
   </script>
+
+  <style>
+    /* 简单模态框样式 */
+    #ageModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    #ageModal .modal-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    #ageModal button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+    }
+    #btnAbove24 { background-color: #28a745; color: #fff; }
+    #btnUnder24 { background-color: #dc3545; color: #fff; }
+  </style>
 </head>
+
 <body>
   <!-- 导航栏 -->
   <header>
@@ -113,18 +140,14 @@ const waMessages = [
           <img src="/images/logo.png" alt="Itask Logo" class="logo-icon">
           <span>ITask India</span>
         </a>
-        
         <div class="desktop-nav">
           <a href="#how-it-works">How It Works</a>
           <a href="/about.html" target="_blank">About Us</a>
           <a href="/contact.html" target="_blank">Contact Us</a>
           <a href="/faq.html" target="_blank">FAQ</a>
         </div>
-        
         <button class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-nav">☰</button>
       </nav>
-      
-      <!-- 移动导航菜单 -->
       <div id="mobile-nav" class="mobile-nav">
         <a href="#how-it-works">How It Works</a>
         <a href="/about.html" target="_blank">About Us</a>
@@ -134,14 +157,14 @@ const waMessages = [
     </div>
   </header>
 
-  <!-- 英雄区域 -->
+  <!-- 英雄区 -->
   <section class="hero">
     <div class="hero-content">
       <h1 class="hero-title">Test Products & Earn Rewards in India</h1>
-      <p class="hero-subtitle">Earn from ₹1000 to ₹8000 by Completing Easy Task with Mobile</p>
+      <p class="hero-subtitle">Earn from ₹1000 to ₹8000 by Completing Easy Tasks with Mobile</p>
       <div class="hero-cta">
-        <a href="https://wa.me/17097058838" target="_blank" class="btn btn-primary" onclick="return handleWaClick()">Get Started</a>
-        <a href="https://wa.me/17097058838" target="_blank" class="btn btn-outline" onclick="return handleWaClick()">Learn More</a>
+        <a href="#" class="btn btn-primary" onclick="return handleWaClick()">Get Started</a>
+        <a href="#" class="btn btn-outline" onclick="return handleWaClick()">Learn More</a>
       </div>
     </div>
   </section>
@@ -150,106 +173,20 @@ const waMessages = [
   <section id="how-it-works" class="section">
     <div class="container">
       <h2 class="section-title">How It Works</h2>
-      
       <div class="steps">
-        <div class="step-item">
-          <div class="step-icon">📦</div>
-          <div class="step-content">
-            <h3><span class="step-number">1</span> Contact Support</h3>
-            <p>Click the green button to chat with support</p>
-          </div>
-        </div>
-        
-        <div class="step-item">
-          <div class="step-icon">📝</div>
-          <div class="step-content">
-            <h3><span class="step-number">2</span> Complete Tasks</h3>
-            <p>Get tasks from the platform and finish them</p>
-          </div>
-        </div>
-        
-        <div class="step-item">
-          <div class="step-icon">💰</div>
-          <div class="step-content">
-            <h3><span class="step-number">3</span> Get Rewarded</h3>
-            <p>Receive your thank-you reward after review approval</p>
-          </div>
-        </div>
+        <div class="step-item"><div class="step-icon">📦</div><div class="step-content"><h3><span class="step-number">1</span> Contact Support</h3><p>Click the green button to chat with support</p></div></div>
+        <div class="step-item"><div class="step-icon">📝</div><div class="step-content"><h3><span class="step-number">2</span> Complete Tasks</h3><p>Get tasks from the platform and finish them</p></div></div>
+        <div class="step-item"><div class="step-icon">💰</div><div class="step-content"><h3><span class="step-number">3</span> Get Rewarded</h3><p>Receive your thank-you reward after review approval</p></div></div>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials板块 -->
-  <section id="testimonials" class="section testimonials-section">
-    <div class="container">
-      <h2 class="section-title">What Our Testers Say</h2>
-      
-      <div class="testimonials">
-        <div class="testimonial-card">
-          <p class="testimonial-text">I was skeptical at first, but the process was so easy and the reward came exactly as promised. Highly recommend!</p>
-          <div class="testimonial-author">
-            <div class="author-avatar">P</div>
-            <div class="author-info">
-              <h4>Priya Sharma</h4>
-              <p>Bangalore</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="testimonial-card">
-          <p class="testimonial-text">Great way to try new products and earn some extra money. Customer support is very responsive on WhatsApp.</p>
-          <div class="testimonial-author">
-            <div class="author-avatar">R</div>
-            <div class="author-info">
-              <h4>Raj Patel</h4>
-              <p>Mumbai</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ板块 -->
-  <section id="faq" class="section">
-    <div class="container">
-      <h2 class="section-title">Frequently Asked Questions</h2>
-      
-      <div class="faq">
-        <div class="faq-item">
-          <div class="faq-question">Is this a job or financial scheme?</div>
-          <div class="faq-answer">
-            <p>No, this is a product testing community. Tasks are voluntary product trials and rewards are tokens of appreciation, not salaries or investments.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">Do I need to pay anything to join?</div>
-          <div class="faq-answer">
-            <p>Tasks cost nothing. Some trials may need a small fee, but it’s fully refunded with extra rewards once completed—don’t worry!</p>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">How do I receive my rewards?</div>
-          <div class="faq-answer">
-            <p>Rewards are typically sent via UPI, PayPal, or gift cards within 3-5 business days after your review is approved.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA板块 -->
+  <!-- CTA区 -->
   <section class="section cta-section">
     <div class="container">
       <h2 class="cta-title">Ready to Start Testing?</h2>
-      <p class="cta-subtitle">
-        Join thousands of happy testers across India and get access to exclusive product testing opportunities.
-      </p>
-      <a href="https://wa.me/17097058838" target="_blank" class="btn btn-secondary cta-btn" onclick="return handleWaClick()">
-        Join Now via WhatsApp
-      </a>
+      <p class="cta-subtitle">Join thousands of happy testers across India and get access to exclusive product testing opportunities.</p>
+      <a href="#" class="btn btn-secondary cta-btn" onclick="return handleWaClick()">Join Now via WhatsApp</a>
     </div>
   </section>
 
@@ -268,10 +205,19 @@ const waMessages = [
   </footer>
 
   <!-- 浮动WhatsApp按钮 -->
-  <a href="https://wa.me/17097058838" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp" onclick="return handleWaClick()">
+  <a href="#" class="whatsapp-float" aria-label="Chat on WhatsApp" onclick="return handleWaClick()">
     <span class="whatsapp-icon">💬</span>
     <span class="notification-dot"></span>
   </a>
+
+  <!-- 年龄选择模态框 -->
+  <div id="ageModal">
+    <div class="modal-content">
+      <p>This reward program is only for users aged 24 and above in India.</p>
+      <button id="btnAbove24">I am 24 or above</button>
+      <button id="btnUnder24">I am under 24</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
