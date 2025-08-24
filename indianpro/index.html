@@ -50,7 +50,7 @@
       return `https://wa.me/${account}?text=${fixedMessage}`;
     }
 
-    // 异步上报 Google 转化事件，避免页面卸载丢失
+    // 异步上报 Google 转化事件
     function reportConversionAsync(url) {
       gtag('event', 'conversion', {
         'send_to': 'AW-17462482672/RIMDCN-A_4QbEPCt4YZB',
@@ -70,7 +70,7 @@
       const waLink = getWaLink();
 
       if (ageStatus === "under24") {
-        return false; // <24，不跳转、不上报、不提示
+        return false; // <24，不跳转、不上报事件
       } else if (ageStatus === "24orAbove") {
         reportConversionAsync(waLink);
         return false;
@@ -93,6 +93,7 @@
   </script>
 
   <style>
+    /* 年龄选择弹窗样式 */
     #ageModal {
       display: none;
       position: fixed;
@@ -109,23 +110,32 @@
       text-align: center;
       max-width: 400px;
       width: 90%;
+      animation: fadeIn 0.3s ease-out;
     }
     #ageModal button {
-      margin: 10px;
+      margin: 10px 0;
       padding: 12px 0;
       font-size: 16px;
       cursor: pointer;
       border-radius: 5px;
       border: none;
-      width: 45%; /* 宽度一致 */
+      width: 80%; /* 宽度一致 */
     }
     #btnAbove24 { background-color: #28a745; color: #fff; }
     #btnUnder24 { background-color: #dc3545; color: #fff; }
-    /* 居中两个按钮 */
+
+    /* 按钮竖向排列 */
     #ageModal .button-wrapper {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      align-items: center;
       margin-top: 20px;
+    }
+
+    /* 弹窗动画 */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
