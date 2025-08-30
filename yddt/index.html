@@ -26,6 +26,7 @@
             background: white;
             border-radius: 12px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
         
         h1 {
@@ -128,6 +129,7 @@
             border-radius: 6px;
             margin-bottom: 20px;
             display: none;
+            border-left: 4px solid #28a745;
         }
         
         .generated-field {
@@ -157,6 +159,70 @@
             font-size: 16px;
         }
         
+        /* 成功提示弹窗 */
+        .success-toast {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.5s forwards, fadeOut 0.5s forwards 2.5s;
+        }
+        
+        /* 错误提示弹窗 */
+        .error-toast {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f44336;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.5s forwards, fadeOut 0.5s forwards 2.5s;
+        }
+        
+        .success-toast svg, .error-toast svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        
+        @keyframes slideIn {
+            from {
+                top: -100px;
+                opacity: 0;
+            }
+            to {
+                top: 30px;
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeOut {
+            from {
+                top: 30px;
+                opacity: 1;
+            }
+            to {
+                top: -100px;
+                opacity: 0;
+            }
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -165,6 +231,11 @@
             .radio-group {
                 flex-direction: column;
                 gap: 10px;
+            }
+            
+            .success-toast, .error-toast {
+                width: 90%;
+                text-align: center;
             }
         }
     </style>
@@ -427,6 +498,62 @@
             return true;
         }
         
+        // 显示成功提示
+        function showSuccessToast(message = "提交成功！数据已成功发送到服务器。") {
+            // 移除现有的提示（如果有）
+            const existingToast = document.querySelector('.success-toast, .error-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            // 创建新的提示
+            const toast = document.createElement('div');
+            toast.className = 'success-toast';
+            toast.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // 3秒后移除提示
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 3000);
+        }
+        
+        // 显示错误提示
+        function showErrorToast(message) {
+            // 移除现有的提示（如果有）
+            const existingToast = document.querySelector('.success-toast, .error-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            // 创建新的提示
+            const toast = document.createElement('div');
+            toast.className = 'error-toast';
+            toast.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // 5秒后移除提示
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 5000);
+        }
+        
         // 提交表单到API
         function submitForm() {
             const submitBtn = document.getElementById('submitBtn');
@@ -453,25 +580,47 @@
                 body: JSON.stringify(formData)
             })
             .then(response => {
+                // 首先检查HTTP状态码
                 if (!response.ok) {
-                    throw new Error('网络响应不正常');
+                    throw new Error(`HTTP错误! 状态: ${response.status}`);
                 }
-                return response.json();
+                
+                // 尝试解析JSON响应
+                return response.json().then(data => {
+                    // 检查API返回的业务状态码
+                    // 注意：这里需要根据实际API返回的结构调整
+                    if (data && data.code !== undefined) {
+                        // 假设code为0表示成功，其他值表示失败
+                        if (data.code === 200) {
+                            return { success: true, data: data };
+                        } else {
+                            throw new Error(data.message || `API返回错误: ${data.code}`);
+                        }
+                    } else if (data && data.msg !== undefined) {
+                        // 或者根据msg字段判断
+                        if (data.msg === '操作成功') {
+                            return { success: true, data: data };
+                        } else {
+                            throw new Error(data.message || 'API返回失败状态');
+                        }
+                    } else {
+                        // 如果没有明确的成功标志，我们假设请求成功
+                        return { success: true, data: data };
+                    }
+                });
             })
-            .then(data => {
-                // 显示成功消息
-                document.getElementById('successMessage').style.display = 'block';
+            .then(result => {
+                // 显示成功提示
+                showSuccessToast("提交成功！数据已成功处理。");
+                
+                // 重置表单
                 document.getElementById('userForm').reset();
                 generateUsername(); // 重新生成用户名
                 getCountryFromIP(); // 重新获取国家信息
-                
-                // 3秒后隐藏成功消息
-                setTimeout(() => {
-                    document.getElementById('successMessage').style.display = 'none';
-                }, 3000);
             })
             .catch((error) => {
-                alert('提交失败: ' + error.message);
+                console.error('提交错误:', error);
+                showErrorToast(`提交失败: ${error.message}`);
             })
             .finally(() => {
                 submitBtn.disabled = false;
