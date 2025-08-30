@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户信息提交表单</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .phone-input {
+            display: flex;
+        }
+        
+        .country-code {
+            padding: 12px;
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            border-right: none;
+            border-radius: 6px 0 0 6px;
+            font-weight: 500;
+        }
+        
+        .phone-number {
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .radio-option input {
+            width: auto;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .generated-field {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(52, 152, 219, 0.3);
+            border-radius: 50%;
+            border-top-color: #3498db;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .country-info {
+            padding: 12px 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>用户信息提交表单</h1>
+        
+        <div class="success-message" id="successMessage">
+            提交成功！感谢您提供的信息。
+        </div>
+        
+        <form id="userForm">
+            <div class="form-group">
+                <label for="username">用户名 <span class="required">*</span></label>
+                <input type="text" id="username" name="username" class="generated-field" readonly>
+                <div class="error" id="usernameError">用户名是必填字段</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="contry">国家/地区 <span class="required">*</span></label>
+                <div class="country-info" id="countryDisplay">
+                    <span class="loading" id="countryLoading"></span>
+                    <span id="countryText">正在获取国家信息...</span>
+                </div>
+                <input type="hidden" id="contry" name="contry">
+                <div class="error" id="contryError">无法获取国家信息，请刷新页面重试</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">昵称 <span class="required">*</span></label>
+                <input type="text" id="name" name="name" placeholder="请输入您的昵称">
+                <div class="error" id="nameError">昵称是必填字段</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">手机号码 <span class="required">*</span></label>
+                <div class="phone-input">
+                    <div class="country-code">+91</div>
+                    <input type="text" id="phone" name="phone" class="phone-number" placeholder="请输入印度手机号码">
+                </div>
+                <div class="error" id="phoneError">请输入有效的印度手机号码</div>
+            </div>
+            
+            <div class="form-group">
+                <label>性别 <span class="required">*</span></label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="male" name="sex" value="0">
+                        <label for="male">男</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="female" name="sex" value="1">
+                        <label for="female">女</label>
+                    </div>
+                </div>
+                <div class="error" id="sexError">请选择性别</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="age">年龄 <span class="required">*</span></label>
+                <input type="text" id="age" name="age" placeholder="请输入您的年龄">
+                <div class="error" id="ageError">年龄是必填字段</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">邮箱 <span class="required">*</span></label>
+                <input type="email" id="email" name="email" placeholder="请输入您的邮箱地址">
+                <div class="error" id="emailError">请输入有效的邮箱地址</div>
+            </div>
+            
+            <button type="submit" id="submitBtn">提交信息</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 生成用户名
+            generateUsername();
+            
+            // 获取国家信息
+            getCountryFromIP();
+            
+            // 表单提交处理
+            const form = document.getElementById('userForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (validateForm()) {
+                    submitForm();
+                }
+            });
+            
+            // 输入框实时验证
+            document.getElementById('name').addEventListener('blur', validateName);
+            document.getElementById('phone').addEventListener('blur', validatePhone);
+            document.getElementById('age').addEventListener('blur', validateAge);
+            document.getElementById('email').addEventListener('blur', validateEmail);
+            
+            // 性别选择验证
+            const sexRadios = document.querySelectorAll('input[name="sex"]');
+            sexRadios.forEach(radio => {
+                radio.addEventListener('change', validateSex);
+            });
+        });
+        
+        // 生成8位用户名，前4位为zhsh
+        function generateUsername() {
+            const prefix = 'zhsh';
+            const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let randomPart = '';
+            
+            for (let i = 0; i < 4; i++) {
+                randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            document.getElementById('username').value = prefix + randomPart;
+        }
+        
+        // 通过IP获取国家信息
+        function getCountryFromIP() {
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.country_name) {
+                        document.getElementById('contry').value = data.country_name;
+                        document.getElementById('countryText').textContent = data.country_name;
+                        document.getElementById('countryLoading').style.display = 'none';
+                    } else {
+                        throw new Error('无法获取国家信息');
+                    }
+                })
+                .catch(error => {
+                    console.error('获取国家信息失败:', error);
+                    document.getElementById('countryText').textContent = '获取国家信息失败';
+                    document.getElementById('countryLoading').style.display = 'none';
+                    document.getElementById('contryError').style.display = 'block';
+                });
+        }
+        
+        // 验证印度手机号码
+        function validateIndianPhone(phone) {
+            // 印度手机号码通常以6,7,8,9开头，共10位数字
+            const indianPhoneRegex = /^[6-9]\d{9}$/;
+            return indianPhoneRegex.test(phone);
+        }
+        
+        // 表单验证函数
+        function validateForm() {
+            let isValid = true;
+            
+            if (!validateCountry()) isValid = false;
+            if (!validateName()) isValid = false;
+            if (!validatePhone()) isValid = false;
+            if (!validateSex()) isValid = false;
+            if (!validateAge()) isValid = false;
+            if (!validateEmail()) isValid = false;
+            
+            return isValid;
+        }
+        
+        function validateCountry() {
+            const country = document.getElementById('contry').value;
+            const errorElement = document.getElementById('contryError');
+            
+            if (!country) {
+                errorElement.style.display = 'block';
+                errorElement.textContent = '无法获取国家信息，请刷新页面重试';
+                return false;
+            }
+            
+            errorElement.style.display = 'none';
+            return true;
+        }
+        
+        function validateName() {
+            const name = document.getElementById('name').value.trim();
+            const errorElement = document.getElementById('nameError');
+            
+            if (name === '') {
+                errorElement.style.display = 'block';
+                errorElement.textContent = '昵称是必填字段';
+                return false;
+            }
+            
+            errorElement.style.display = 'none';
+            return true;
+        }
+        
+        function validatePhone() {
+            const phone = document.getElementById('phone').value.trim();
+            const errorElement = document.getElementById('phoneError');
+            
+            if (phone === '') {
+                errorElement.style.display = 'block';
+                errorElement.textContent = '手机号码是必填字段';
+                return false;
+            }
+            
+            if (!validateIndianPhone(phone)) {
+                errorElement.style.display = 'block';
+                errorElement.textContent = '请输入有效的印度手机号码（10位数字，以6-9开头）';
+                return false;
+            }
+            
+            errorElement.style.display = 'none';
+            return true;
+        }
+        
+        function validateSex() {
+            const sexSelected = document.querySelector('input[name="sex"]:checked');
+            const errorElement = document.getElementById('sexError');
+            
+            if (!sexSelected) {
+                errorElement.style.display = 'block';
+                return false;
+            }
+            
+            errorElement.style.display = 'none';
+            return true;
+        }
+        
+        function validateAge() {
+            const age = document.getElementById('age').value.trim();
+            const errorElement = document.getElementById('ageError');
+            
+            if (age === '') {
+                errorElement.style.display = 'block';
+                errorElement.textContent = '年龄是必填字段';
+                return false;
+            }
+            
+            if (isNaN(age) || age < 1 || age > 120) {
+                errorElement.style.display = 'block';
+                errorElement.textContent = '请输入有效的年龄（1-120）';
+                return false;
+            }
+            
+            errorElement.style.display = 'none';
+            return true;
+        }
+        
+        function validateEmail() {
+            const email = document.getElementById('email').value.trim();
+            const errorElement = document.getElementById('emailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (email === '') {
+                errorElement.style.display = 'block';
+                errorElement.textContent = '邮箱是必填字段';
+                return false;
+            }
+            
+            if (!emailRegex.test(email)) {
+                errorElement.style.display = 'block';
+                errorElement.textContent = '请输入有效的邮箱地址';
+                return false;
+            }
+            
+            errorElement.style.display = 'none';
+            return true;
+        }
+        
+        // 提交表单到API
+        function submitForm() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '提交中...';
+            
+            // 准备表单数据
+            const formData = {
+                username: document.getElementById('username').value,
+                contry: document.getElementById('contry').value,
+                name: document.getElementById('name').value.trim(),
+                phone: '+91' + document.getElementById('phone').value.trim(),
+                sex: document.querySelector('input[name="sex"]:checked').value,
+                age: document.getElementById('age').value.trim(),
+                email: document.getElementById('email').value.trim()
+            };
+            
+            // 发送POST请求到API
+            fetch('https://www.advancedglobalsystems41.cc/api/system/applyInfo/otherAdd', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('网络响应不正常');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 显示成功消息
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('userForm').reset();
+                generateUsername(); // 重新生成用户名
+                getCountryFromIP(); // 重新获取国家信息
+                
+                // 3秒后隐藏成功消息
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 3000);
+            })
+            .catch((error) => {
+                alert('提交失败: ' + error.message);
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '提交信息';
+            });
+        }
+    </script>
+</body>
+</html>
