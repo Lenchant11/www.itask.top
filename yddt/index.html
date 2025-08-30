@@ -195,7 +195,25 @@
             animation: slideIn 0.5s forwards, fadeOut 0.5s forwards 2.5s;
         }
         
-        .success-toast svg, .error-toast svg {
+        /* 警告提示弹窗 */
+        .warning-toast {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff9800;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.5s forwards, fadeOut 0.5s forwards 2.5s;
+        }
+        
+        .success-toast svg, .error-toast svg, .warning-toast svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
@@ -233,7 +251,7 @@
                 gap: 10px;
             }
             
-            .success-toast, .error-toast {
+            .success-toast, .error-toast, .warning-toast {
                 width: 90%;
                 text-align: center;
             }
@@ -251,7 +269,7 @@
         <form id="userForm">
             <div class="form-group">
                 <label for="username">用户名 <span class="required">*</span></label>
-                <input type="text" id="username" name="username" class="generated-field" readonly>
+                <input type="text" id="username" name="username" class="generated-field" value="Robot11" readonly>
                 <div class="error" id="usernameError">用户名是必填字段</div>
             </div>
             
@@ -313,8 +331,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 生成用户名
-            generateUsername();
+            // 设置固定用户名
+            setFixedUsername();
             
             // 获取国家信息
             getCountryFromIP();
@@ -341,17 +359,9 @@
             });
         });
         
-        // 生成8位用户名，前4位为zhsh
-        function generateUsername() {
-            const prefix = 'zhsh';
-            const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            let randomPart = '';
-            
-            for (let i = 0; i < 4; i++) {
-                randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            
-            document.getElementById('username').value = prefix + randomPart;
+        // 设置固定用户名
+        function setFixedUsername() {
+            document.getElementById('username').value = 'Robot11';
         }
         
         // 通过IP获取国家信息
@@ -501,7 +511,7 @@
         // 显示成功提示
         function showSuccessToast(message = "提交成功！数据已成功发送到服务器。") {
             // 移除现有的提示（如果有）
-            const existingToast = document.querySelector('.success-toast, .error-toast');
+            const existingToast = document.querySelector('.success-toast, .error-toast, .warning-toast');
             if (existingToast) {
                 existingToast.remove();
             }
@@ -511,7 +521,7 @@
             toast.className = 'success-toast';
             toast.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    <path d="M12 2C6.48 2 2 6.48 2 12s極4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                 </svg>
                 <span>${message}</span>
             `;
@@ -529,7 +539,7 @@
         // 显示错误提示
         function showErrorToast(message) {
             // 移除现有的提示（如果有）
-            const existingToast = document.querySelector('.success-toast, .error-toast');
+            const existingToast = document.querySelector('.success-toast, .error-toast, .warning-toast');
             if (existingToast) {
                 existingToast.remove();
             }
@@ -554,6 +564,60 @@
             }, 5000);
         }
         
+        // 显示警告提示
+        function showWarningToast(message) {
+            // 移除现有的提示（如果有）
+            const existingToast = document.querySelector('.success-toast, .error-toast, .warning-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            // 创建新的提示
+            const toast = document.createElement('div');
+            toast.className = 'warning-toast';
+            toast.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s极4.48 10 10 10 极10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // 5秒后移除提示
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 5000);
+        }
+        
+        // 处理特定错误代码
+        function handleSpecificError(errorCode, errorMessage) {
+            switch(errorCode) {
+                case 509:
+                    showWarningToast("服务器带宽限制已超出，请稍后再试或联系管理员。");
+                    break;
+                case 429:
+                    showWarningToast("请求过于频繁，请稍后再试。");
+                    break;
+                case 403:
+                    showErrorToast("访问被拒绝，请检查权限设置。");
+                    break;
+                case 401:
+                    showErrorToast("身份验证失败，请重新登录。");
+                    break;
+                case 500:
+                    showErrorToast("服务器内部错误，请稍后再试。");
+                    break;
+                case 503:
+                    showWarningToast("服务暂时不可用，请稍后再试。");
+                    break;
+                default:
+                    showErrorToast(errorMessage || `提交失败，错误代码: ${errorCode}`);
+            }
+        }
+        
         // 提交表单到API
         function submitForm() {
             const submitBtn = document.getElementById('submitBtn');
@@ -565,11 +629,13 @@
                 username: document.getElementById('username').value,
                 contry: document.getElementById('contry').value,
                 name: document.getElementById('name').value.trim(),
-                phone: '+91' + document.getElementById('phone').value.trim(),
+                phone: '+91' + document.getElementById('phone').value.trim(), // 包含国家代码
                 sex: document.querySelector('input[name="sex"]:checked').value,
                 age: document.getElementById('age').value.trim(),
                 email: document.getElementById('email').value.trim()
             };
+            
+            console.log('提交的数据:', formData); // 调试用
             
             // 发送POST请求到API
             fetch('https://www.advancedglobalsystems41.cc/api/system/applyInfo/otherAdd', {
@@ -580,47 +646,52 @@
                 body: JSON.stringify(formData)
             })
             .then(response => {
+                console.log('响应状态:', response.status); // 调试用
+                
                 // 首先检查HTTP状态码
                 if (!response.ok) {
-                    throw new Error(`HTTP错误! 状态: ${response.status}`);
+                    // 提取错误代码
+                    const errorCode = response.status;
+                    throw new Error(`HTTP错误! 状态: ${errorCode}`);
                 }
                 
                 // 尝试解析JSON响应
-                return response.json().then(data => {
-                    // 检查API返回的业务状态码
-                    // 注意：这里需要根据实际API返回的结构调整
-                    if (data && data.code !== undefined) {
-                        // 假设code为0表示成功，其他值表示失败
-                        if (data.code === 200) {
-                            return { success: true, data: data };
-                        } else {
-                            throw new Error(data.message || `API返回错误: ${data.code}`);
-                        }
-                    } else if (data && data.msg !== undefined) {
-                        // 或者根据msg字段判断
-                        if (data.msg === '操作成功') {
-                            return { success: true, data: data };
-                        } else {
-                            throw new Error(data.message || 'API返回失败状态');
-                        }
-                    } else {
-                        // 如果没有明确的成功标志，我们假设请求成功
-                        return { success: true, data: data };
-                    }
-                });
+                return response.json();
             })
-            .then(result => {
-                // 显示成功提示
-                showSuccessToast("提交成功！数据已成功处理。");
+            .then(data => {
+                console.log('API响应数据:', data); // 调试用
                 
-                // 重置表单
-                document.getElementById('userForm').reset();
-                generateUsername(); // 重新生成用户名
-                getCountryFromIP(); // 重新获取国家信息
+                // 根据API返回的code和msg判断成功与否
+                if (data && data.code === 200 && data.msg === "操作成功") {
+                    // 显示成功提示
+                    showSuccessToast("提交成功！数据已成功处理。");
+                    
+                    // 重置表单（保留用户名和国家信息）
+                    document.getElementById('name').value = '';
+                    document.getElementById('phone').value = '';
+                    document.querySelectorAll('input[name="sex"]').forEach(radio => {
+                        radio.checked = false;
+                    });
+                    document.getElementById('age').value = '';
+                    document.getElementById('email').value = '';
+                } else {
+                    // 处理API返回的业务错误
+                    const errorCode = data.code || '未知';
+                    const errorMsg = data.msg || 'API返回错误';
+                    handleSpecificError(errorCode, errorMsg);
+                }
             })
             .catch((error) => {
                 console.error('提交错误:', error);
-                showErrorToast(`提交失败: ${error.message}`);
+                
+                // 检查错误信息中是否包含错误代码
+                const errorMatch = error.message.match(/状态: (\d+)/);
+                if (errorMatch && errorMatch[1]) {
+                    const errorCode = parseInt(errorMatch[1]);
+                    handleSpecificError(errorCode, error.message);
+                } else {
+                    showErrorToast(`提交失败: ${error.message}`);
+                }
             })
             .finally(() => {
                 submitBtn.disabled = false;
