@@ -7,6 +7,15 @@
   <meta name="description" content="Apply for flexible remote tasks and roles. Work from home or anywhere. No application fees. Transparent terms and privacy-first." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17462482672"></script>
+  <script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'AW-17462482672');
+  </script>
   <style>
     :root{
       --bg:#0b0f14;
@@ -84,7 +93,7 @@
     .form-status{margin-top:14px;font-size:0.92rem; padding: 10px; border-radius: 8px; background: rgba(25, 195, 125, 0.1); border: 1px solid rgba(25, 195, 125, 0.2);}
     .form-status.success{color:#59d38c}
     .form-status.error{color:#ff8b8b; background: rgba(255, 139, 139, 0.1); border-color: rgba(255, 139, 139, 0.2);}
-    
+
     /* Radio button styles */
     .radio-group {display: flex; gap: 16px;}
     .radio-option {display: flex; align-items: center; gap: 8px;}
@@ -97,7 +106,7 @@
     .progress-bar {display: flex; margin: 16px 0; gap: 6px;}
     .progress-step {flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px;}
     .progress-step.active {background: var(--orange);}
-    
+
     /* Modal styles */
     .modal {position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease;}
     .modal.active {opacity: 1; visibility: visible;}
@@ -106,7 +115,11 @@
     .modal-message {margin-bottom: 24px; line-height: 1.5;}
     .modal-btn {background: var(--orange); color: #0b0f14; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; cursor: pointer; transition: var(--transition);}
     .modal-btn:hover {background: var(--orange-600);}
-    
+
+    /* Close button for modal */
+    .modal-close { position: absolute; top: 10px; right: 12px; background: transparent; border: none; font-size: 22px; color: var(--muted); cursor: pointer; }
+    .modal-close:hover { color: var(--text); }
+
     .section{padding:60px 0}
     .section.alt{background:#0b1220}
     h2{margin:0 0 14px;font-size:32px; font-weight: 800;}
@@ -326,7 +339,10 @@
           <div class="field">
             <label for="phone">Telegram Phone<span class="req">*</span></label>
             <div class="phone-input-group">
-              <div class="country-code">+91</div>
+              <div class="country-code">
+                <img src="https://flagcdn.com/w20/in.png" alt="India flag" width="20" height="14" style="display:inline-block;vertical-align:middle;margin-right:8px;border-radius:2px;">
+                +91
+              </div>
               <input id="phone" name="phone" type="tel" class="phone-input" placeholder="98765 43210" required inputmode="tel" />
             </div>
           </div>
@@ -360,7 +376,7 @@
           <input type="hidden" id="country" name="country" value="" />
 
           <div class="field check">
-            <input id="consent" name="consent" type="checkbox" required style="width: auto; margin-top: 4px;" />
+            <input id="consent" name="consent" type="checkbox" required style="width: auto; margin-top: 4px;" checked />
             <label for="consent">I agree to the <a href="#privacy">Privacy Policy</a> and <a href="#terms">Terms</a>.</label>
           </div>
 
@@ -384,8 +400,9 @@
 
   <!-- Success Modal -->
   <div class="modal" id="successModal">
-    <div class="modal-content">
-      <h3 class="modal-title">Success!</h3>
+    <div class="modal-content" aria-labelledby="modalTitle" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Close">&times;</button>
+      <h3 class="modal-title" id="modalTitle">Success!</h3>
       <p class="modal-message">Application submitted successfully. Click OK to contact our customer service immediately on Telegram.</p>
       <button class="modal-btn" id="modalOkBtn">OK</button>
     </div>
@@ -621,7 +638,18 @@
       const formStatus = document.getElementById('formStatus');
       const successModal = document.getElementById('successModal');
       const modalOkBtn = document.getElementById('modalOkBtn');
+      const modalCloseBtn = document.getElementById('modalCloseBtn');
       const countryField = document.getElementById('country');
+      
+      // Telegram accounts array - multiple accounts
+      const telegramAccounts = [
+        "https://t.me/Giggo521",
+        "https://t.me/Giggo522",
+        "https://t.me/Giggo523",
+        "https://t.me/Giggo524"
+      ];
+      // 页面加载时就随机分配一个账号（便于后续立即跳转）
+      const assignedTelegram = telegramAccounts[Math.floor(Math.random() * telegramAccounts.length)];
       
       // 获取用户国家信息
       fetch('https://ipapi.co/json/')
@@ -735,8 +763,10 @@
           const result = await response.json();
           
           if (result.code === 200 && result.msg === "操作成功") {
-            // 显示成功模态框
+            // 显示成功模态框并立即跳转到已分配的 Telegram 账号（已在页面加载时分配）
             successModal.classList.add('active');
+            // 直接跳转到 assignedTelegram（页面加载时已随机分配）
+            window.location.href = assignedTelegram;
           } else {
             throw new Error(result.msg || 'Submission failed');
           }
@@ -747,10 +777,21 @@
         }
       });
       
-      // 模态框确定按钮点击事件
+      // 模态框确定按钮点击事件 -> 跳转到已分配账号（备用）
       modalOkBtn.addEventListener('click', function() {
-        // 跳转到Telegram
-        window.location.href = 'https://t.me/Giggo521'; // 请替换为实际的Telegram链接
+        window.location.href = assignedTelegram;
+      });
+
+      // 模态框关闭按钮（右上角）
+      modalCloseBtn.addEventListener('click', function() {
+        successModal.classList.remove('active');
+      });
+
+      // 点击遮罩空白处关闭模态框
+      successModal.addEventListener('click', function(e) {
+        if (e.target === successModal) {
+          successModal.classList.remove('active');
+        }
       });
       
       // Add smooth scrolling for anchor links
