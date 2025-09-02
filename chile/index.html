@@ -7,6 +7,16 @@
   <meta name="description" content="Postula para tareas y roles remotos flexibles. Trabaja desde casa o cualquier lugar. Sin tarifas de postulación. Términos transparentes y privacidad primero." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17462482672"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-17462482672');
+  </script>
+
   <style>
     :root{
       --bg:#1a365d;
@@ -460,7 +470,7 @@
           <div class="req-icon">📱</div>
           <div>
             <h4>Smartphone</h4>
-            <p>Android o iOS con internet estable.</p>
+            <p>Android or iOS con internet estable.</p>
           </div>
         </div>
         <div class="req-item fade-in delay-1">
@@ -598,6 +608,20 @@
   </footer>
 
   <script>
+    // Google conversion tracking function
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.location = url;
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': 'AW-17462482672/YhS9COSw0ZIbEPCt4YZB',
+          'event_callback': callback
+      });
+      return false;
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       const form = document.getElementById('applicationForm');
       const formStatus = document.getElementById('formStatus');
@@ -679,18 +703,16 @@
           return;
         }
         
-        // Show success modal and redirect to Telegram
+        // Show success modal and use Google conversion tracking for redirect
         successModal.classList.add('active');
         
-        // After 1 second, redirect to Telegram
-        setTimeout(function() {
-          window.location.href = assignedTelegram;
-        }, 1000);
+        // Use Google conversion tracking with callback for redirect
+        gtag_report_conversion(assignedTelegram);
       });
       
       // Modal OK button click event
       modalOkBtn.addEventListener('click', function() {
-        window.location.href = assignedTelegram;
+        gtag_report_conversion(assignedTelegram);
       });
 
       // Modal close button (top right)
