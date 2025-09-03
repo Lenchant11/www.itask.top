@@ -41,7 +41,7 @@
     a:hover{text-decoration:underline}
     .container{width:min(1120px,92%);margin-inline:auto}
 
-    .nav{position:sticky;top:0;z-index:50;background:rgba(42, 67, 101, 0.95);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{position:sticky;top:0;z-index:50;background:rgba(42, 67, 101, 0.95);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
     .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
     .brand{font-weight:800;letter-spacing:.3px;font-size:1.2rem;color: var(--white);}
     .nav-links{display:flex;gap:16px;align-items:center}
@@ -175,7 +175,7 @@
     .testimonial{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:20px;margin:0; position: relative; transition: var(--transition);}
     .testimonial:hover {transform: translateY(-2px); border-color: rgba(255,255,255,0.15);}
     .testimonial:before {
-        content: """;
+        content: "";
         position: absolute;
         top: 8px;
         left: 8px;
@@ -338,13 +338,13 @@
                 <img src="https://flagcdn.com/w20/cl.png" alt="Bandera de Chile" width="20" height="14" style="display:inline-block;vertical-align:middle;border-radius:2px;">
                 +56
               </div>
-              <input id="phone" name="phone" type="tel" class="phone-input" placeholder="9 1234 5678" required inputmode="tel" />
+              <input id="phone" name="phone" type="tel" class="phone-input" placeholder="9 1234 5678" required inputmode="tel" autocomplete="tel" />
             </div>
           </div>
 
           <div class="field">
             <label for="age">Edad<span class="req">*</span></label>
-            <input id="age" name="age" type="number" min="18" max="75" placeholder="ej. 24" required />
+            <input id="age" name="age" type="number" min="21" max="75" placeholder="ej. 24" required />
           </div>
 
           <!-- Hidden fields -->
@@ -352,7 +352,7 @@
           <input type="hidden" id="country" name="country" value="" />
 
           <div class="field check">
-            <input id="consent" name="consent" type="checkbox" required style="width: auto; margin-top: 4px;" checked />
+            <input id="consent" name="consent" type="checkbox" required style="width: auto; margin-top: 4px;" />
             <label for="consent">Acepto la <a href="#privacy">Política de Privacidad</a> y los <a href="#terms">Términos de Uso</a>.</label>
           </div>
 
@@ -483,7 +483,7 @@
         <div class="req-item fade-in delay-1">
           <div class="req-icon">🎯</div>
           <div>
-            <h4>Edad 23+</h4>
+            <h4>Edad 21+</h4>
             <p>Verificamos la edad para elegibilidad y cumplimiento.</p>
           </div>
         </div>
@@ -608,18 +608,40 @@
   </footer>
 
   <script>
-    // Google conversion tracking function
-    function gtag_report_conversion(url) {
-      var callback = function () {
-        if (typeof(url) != 'undefined') {
-          window.location = url;
+    // Helper: send analytics events via gtag without blocking.
+    function sendAnalyticsEvent(eventName, params = {}) {
+      try {
+        if (window.gtag) {
+          gtag('event', eventName, params);
+        } else {
+          // If gtag isn't ready, push to dataLayer as fallback
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: eventName, ...params });
         }
-      };
-      gtag('event', 'conversion', {
-          'send_to': 'AW-17462482672/YhS9COSw0ZIbEPCt4YZB',
-          'event_callback': callback
-      });
-      return false;
+      } catch (err) {
+        console.warn('Analytics error', err);
+      }
+    }
+
+    // Helper: open Telegram in a new tab asynchronously and robustly (fallback to same-tab if popup blocked)
+    function openTelegram(url) {
+      try {
+        // Try to open in a new tab (user gesture required — this function is called on user click)
+        var win = window.open(url, '_blank', 'noopener,noreferrer');
+        if (!win) {
+          // Popup blocked — fallback to replace current location after a short delay
+          setTimeout(function() { window.location.href = url; }, 250);
+        }
+      } catch (err) {
+        // On any error, fallback to location change
+        setTimeout(function() { window.location.href = url; }, 250);
+      }
+    }
+
+    // Simplified conversion function (no callback-based redirect) — we will call analytics separately and open telegram separately
+    function gtag_report_conversion_simple() {
+      // For compatibility with existing snippet names, we keep a function but it only sends analytics.
+      sendAnalyticsEvent('conversion', {'send_to': 'AW-17462482672/YhS9COSw0ZIbEPCt4YZB'});
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -630,15 +652,15 @@
       const modalCloseBtn = document.getElementById('modalCloseBtn');
       const countryField = document.getElementById('country');
       
-      // Telegram link for Chile
+      // Telegram link for Chile - account pool
       const telegramAccounts = [
         "https://t.me/MicaelaTG12","https://t.me/shi9912"
       ];
       
-      // Assign a Telegram account on page load
+      // Assign a Telegram account on page load (random)
       const assignedTelegram = telegramAccounts[Math.floor(Math.random() * telegramAccounts.length)];
       
-      // Get user country information
+      // Get user country information (third-party service)
       fetch('https://ipapi.co/json/')
         .then(response => response.json())
         .then(data => {
@@ -649,46 +671,77 @@
           countryField.value = 'Chile';
         });
       
-      // Form validation and submission
+      // Intercept clicks on CTA anchors that point to #apply (all out-of-form CTAs) and handle analytics + telegram jump
+      document.addEventListener('click', function(e) {
+        const anchor = e.target.closest('a');
+        if (!anchor) return;
+
+        // Identify CTA anchors that should trigger Telegram + GA:
+        // - href exactly '#apply' OR
+        // - href starts with '#apply' (being safe)
+        if (anchor.getAttribute('href') === '#apply' || (anchor.getAttribute('href') || '').startsWith('#apply')) {
+          e.preventDefault();
+
+          // Send analytics event (non-blocking)
+          sendAnalyticsEvent('apply_cta_click', {
+            method: 'cta_button',
+            label: (anchor.textContent || 'cta').trim()
+          });
+
+          // Also send standard conversion event for Google Ads (non-blocking)
+          sendAnalyticsEvent('conversion', {'send_to': 'AW-17462482672/YhS9COSw0ZIbEPCt4YZB'});
+
+          // Open Telegram in new tab (non-blocking relative to analytics)
+          openTelegram(assignedTelegram);
+
+          return;
+        }
+
+        // For other internal anchor links (privacy/terms etc.) we let default behavior happen.
+      });
+
+      // Form submission handler.
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        
-        // Clear previous error states
+
+        // Visual validation (still provide user feedback), but per requirement, we will proceed to analytics and telegram regardless of content.
         const inputs = form.querySelectorAll('input');
         inputs.forEach(input => {
           input.style.borderColor = '';
         });
-        
+
         let isValid = true;
-        
-        // Validate name
+
+        // Validate name visually
         const nameInput = document.getElementById('name');
         if (!nameInput.value.trim()) {
           isValid = false;
           nameInput.style.borderColor = '#fc8181';
         }
-        
-        // Validate phone
+
+        // Validate phone visually
         const phoneInput = document.getElementById('phone');
         if (!phoneInput.value.trim()) {
           isValid = false;
           phoneInput.style.borderColor = '#fc8181';
-        } else if (!/^[0-9\s\-\(\)]{6,15}$/.test(phoneInput.value)) {
+        } else if (!/^[0-9\s\-\(\)\+]{6,20}$/.test(phoneInput.value)) {
+          // allow + in phone (user might paste with +)
           isValid = false;
           phoneInput.style.borderColor = '#fc8181';
         }
-        
-        // Validate age
+
+        // Validate age visually (must be >=21 and <=75)
         const ageInput = document.getElementById('age');
+        const ageVal = Number(ageInput.value);
         if (!ageInput.value) {
           isValid = false;
           ageInput.style.borderColor = '#fc8181';
-        } else if (ageInput.value < 18 || ageInput.value > 75) {
+        } else if (Number.isNaN(ageVal) || ageVal < 21 || ageVal > 75) {
           isValid = false;
           ageInput.style.borderColor = '#fc8181';
         }
-        
-        // Validate consent
+
+        // Validate consent visually (must be checked)
         const consentInput = document.getElementById('consent');
         if (!consentInput.checked) {
           isValid = false;
@@ -696,23 +749,56 @@
         } else {
           document.querySelector('.field.check label').style.color = '';
         }
-        
+
+        // Show status message for UX (still proceed as required)
         if (!isValid) {
-          formStatus.textContent = 'Por favor completa todos los campos requeridos correctamente.';
+          formStatus.textContent = 'Por favor completa todos los campos requeridos correctamente. Serás redirigido a Telegram para continuar.';
           formStatus.className = 'form-status error';
-          return;
+        } else {
+          formStatus.textContent = 'Formulario recibido. Serás redirigido a Telegram para continuar.';
+          formStatus.className = 'form-status success';
         }
-        
-        // Show success modal and use Google conversion tracking for redirect
+
+        // IMPORTANT: Per your requirement — regardless of validity, we must:
+        // 1) send a Google analytics event
+        // 2) open the assigned Telegram session
+        // Both should be asynchronous and must not block each other.
+
+        // Send a GA event for "apply_submit" with minimal payload
+        sendAnalyticsEvent('apply_submit', {
+          method: 'form',
+          form_valid: isValid ? '1' : '0',
+          age_reported: ageInput.value || '',
+          country: countryField.value || ''
+        });
+
+        // Also send Google Ads conversion event (non-blocking)
+        sendAnalyticsEvent('conversion', {'send_to': 'AW-17462482672/YhS9COSw0ZIbEPCt4YZB'});
+
+        // Optionally show modal briefly (we still show but don't rely on modal click to redirect)
         successModal.classList.add('active');
-        
-        // Use Google conversion tracking with callback for redirect
-        gtag_report_conversion(assignedTelegram);
+
+        // Focus management for accessibility (move focus to OK button)
+        try {
+          modalOkBtn.focus();
+        } catch (err) { /* ignore */ }
+
+        // Open Telegram in a new tab (user gesture context ensures popups permitted)
+        openTelegram(assignedTelegram);
+
+        // Note: we do NOT wait for analytics to finish before redirecting; they run independently.
       });
       
-      // Modal OK button click event
+      // Modal OK button click event (keeps same behavior but not necessary for redirect)
       modalOkBtn.addEventListener('click', function() {
-        gtag_report_conversion(assignedTelegram);
+        // Send an analytics event that the modal was accepted (non-blocking)
+        sendAnalyticsEvent('apply_modal_ok', { method: 'modal' });
+
+        // Open Telegram (if user didn't already get redirected)
+        openTelegram(assignedTelegram);
+
+        // Close modal (UX)
+        successModal.classList.remove('active');
       });
 
       // Modal close button (top right)
@@ -727,20 +813,21 @@
         }
       });
       
-      // Add smooth scrolling for anchor links
+      // Smooth scrolling for normal anchor links (we prevented #apply earlier via delegated click)
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-          e.preventDefault();
-          
           const targetId = this.getAttribute('href');
-          if (targetId === '#') return;
-          
+          if (!targetId || targetId === '#' || targetId === '#apply') return; // #apply handled elsewhere
+          e.preventDefault();
           const targetElement = document.querySelector(targetId);
           if (targetElement) {
             targetElement.scrollIntoView({
               behavior: 'smooth',
               block: 'start'
             });
+          } else {
+            // fallback: navigate to anchor
+            window.location.hash = targetId;
           }
         });
       });
