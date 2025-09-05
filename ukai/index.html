@@ -295,7 +295,113 @@
         transform: perspective(800px) rotateY(0);
       }
       
-      /* Features section styles remain the same */
+      /* Who We Are Section - Updated Layout */
+      .about-section {
+        padding: 100px 0;
+        background: var(--dark);
+      }
+      
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 30px;
+        margin-top: 40px;
+      }
+      
+      .about-item {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 30px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .about-text {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      
+      .about-image {
+        grid-column: 2;
+        grid-row: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .about-image img {
+        width: 100%;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+      
+      .chart-container {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      
+      .risk-free-container {
+        grid-column: 2;
+        grid-row: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      
+      .chart-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+      
+      .chart {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        height: 200px;
+      }
+      
+      .chart-bar {
+        width: 60px;
+        background: var(--primary-gradient);
+        border-radius: 8px 8px 0 0;
+        position: relative;
+        transition: height 1s ease-in-out;
+      }
+      
+      .chart-label {
+        position: absolute;
+        bottom: -30px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 14px;
+      }
+      
+      .chart-value {
+        position: absolute;
+        top: -25px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-weight: bold;
+      }
+      
+      .risk-free-icon {
+        font-size: 50px;
+        color: var(--success);
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      
+      .risk-free-content h3 {
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 24px;
+      }
+      
+      /* Features section styles */
       .features-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -549,7 +655,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-  }
+      }
       
       .author-info h4 {
         margin-bottom: 5px;
@@ -729,6 +835,8 @@
       .footer-links a i {
         margin-right: 10px;
         font-size: 14px;
+        width: 16px;
+        text-align: center;
       }
       
       .footer-bottom {
@@ -739,10 +847,35 @@
         font-size: 14px;
       }
       
-      /* Responsive design remains the same */
+      /* Responsive design */
       @media (max-width: 992px) {
         .hero-content {
           flex-direction: column;
+        }
+        
+        .about-grid {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto;
+        }
+        
+        .about-text {
+          grid-column: 1;
+          grid-row: 1;
+        }
+        
+        .about-image {
+          grid-column: 1;
+          grid-row: 2;
+        }
+        
+        .chart-container {
+          grid-column: 1;
+          grid-row: 3;
+        }
+        
+        .risk-free-container {
+          grid-column: 1;
+          grid-row: 4;
         }
         
         .hero-title {
@@ -768,6 +901,25 @@
         
         .mobile-menu-btn {
           display: block;
+        }
+        
+        .chart {
+          flex-direction: column;
+          align-items: center;
+          height: auto;
+        }
+        
+        .chart-bar {
+          width: 80%;
+          height: 40px !important;
+          margin-bottom: 40px;
+          border-radius: 8px;
+        }
+        
+        .chart-label, .chart-value {
+          position: static;
+          text-align: center;
+          margin: 5px 0;
         }
       }
       
@@ -845,6 +997,11 @@
       .floating {
         animation: float 5s ease-in-out infinite;
       }
+      
+      @keyframes grow {
+        from { height: 0; }
+        to { height: var(--h); }
+      }
     </style>
 </head>
 <body>
@@ -857,6 +1014,7 @@
         
         <ul class="nav-menu">
           <li><a href="#home">Home</a></li>
+          <li><a href="#about">About Us</a></li>
           <li><a href="#features">Features</a></li>
           <li><a href="#how-it-works">How It Works</a></li>
           <li><a href="#pricing">Earnings</a></li>
@@ -898,14 +1056,76 @@
                 <span class="stat-label">Earned This Year</span>
               </div>
               <div class="stat-item">
-                <span class="stat-number">4.8/5</span>
-                <span class="stat-label">Trustpilot Rating</span>
+                <span class="stat-number">97%</span>
+                <span class="stat-label">Customer Satisfaction</span>
               </div>
             </div>
           </div>
           
           <div class="hero-image">
-            <img src="images/bg-office.jpg" alt="AI Earnings Platform Interface">
+            <img src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="AI Earnings Platform Interface">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Who We Are Section - Updated Layout -->
+    <section id="about" class="about-section">
+      <div class="container">
+        <div class="text-center">
+          <span class="pre-title">Our Story</span>
+          <h2 class="section-title">Who We Are</h2>
+        </div>
+        
+        <div class="about-grid">
+          <div class="about-item about-text">
+            <p>We are a team of AI visionaries and efficiency experts who have perfected the fusion of artificial intelligence and human potential. Our platform has undergone hundreds of iterations to deliver an exceptional user experience.</p>
+            <p>We believe AI is not just a tool but a transformative partner that enhances human capabilities. Our mission is to democratize access to AI-powered income opportunities, empowering individuals across the UK to achieve financial growth while developing future-proof skills.</p>
+            <p>Through our advanced platform, we've created an ecosystem where technology and ambition converge to generate substantial additional revenue streams for our community.</p>
+          </div>
+          
+          <div class="about-item about-image">
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Our Team">
+          </div>
+          
+          <div class="about-item chart-container">
+            <h3 class="chart-title">Our Growth Journey</h3>
+            <div class="chart">
+              <div class="chart-bar" style="height: 60px;">
+                <span class="chart-value">2019</span>
+                <span class="chart-label">Foundation</span>
+              </div>
+              <div class="chart-bar" style="height: 100px;">
+                <span class="chart-value">2020</span>
+                <span class="chart-label">First Launch</span>
+              </div>
+              <div class="chart-bar" style="height: 140px;">
+                <span class="chart-value">2021</span>
+                <span class="chart-label">AI Integration</span>
+              </div>
+              <div class="chart-bar" style="height: 180px;">
+                <span class="chart-value">2022</span>
+                <span class="chart-label">UK Expansion</span>
+              </div>
+              <div class="chart-bar" style="height: 220px;">
+                <span class="chart-value">2023</span>
+                <span class="chart-label">Platform 3.0</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="about-item risk-free-container">
+            <div class="risk-free-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="risk-free-content">
+              <h3>Zero Risk, Triple Rewards</h3>
+              <p>Join our AI program with complete confidence. You'll gain valuable AI skills, access cutting-edge technology, and unlock significant earning potential - all with absolutely no financial risk.</p>
+              <p>It's a unique opportunity to future-proof your career while generating substantial additional income on your own terms.</p>
+              <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-primary">Learn More</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -916,17 +1136,26 @@
       <div class="container">
         <div class="text-center">
           <span class="pre-title">Why Choose Us</span>
-          <h2 class="section-title">Earn More with AI Earnings UK</h2>
+          <h2 class="section-title">Powerful Features for Maximum Earnings</h2>
           <p>Our platform is designed specifically for UK residents, with local payment options and dedicated support</p>
         </div>
         
         <div class="features-grid">
           <div class="feature-card">
             <div class="feature-icon">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <h3 class="feature-title">Ultra-fast Response</h3>
+            <p class="feature-desc">Priority computing resources ensure 3x faster response times with zero delays during peak hours. Experience seamless performance when you need it most.</p>
+            <button class="btn btn-primary">Learn More</button>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">
               <i class="fas fa-brain"></i>
             </div>
-            <h3 class="feature-title">Cutting-Edge AI Tools</h3>
-            <p class="feature-desc">Access our powerful AI toolkit - basic for standard tasks, premium for higher-paying opportunities. No technical knowledge required.</p>
+            <h3 class="feature-title">Cutting-Edge AI</h3>
+            <p class="feature-desc">Access our powerful AI toolkit with the latest advancements in machine learning and natural language processing. Stay ahead of the curve with our continuously updated technology.</p>
             <button class="btn btn-primary">Learn More</button>
           </div>
           
@@ -935,7 +1164,16 @@
               <i class="fas fa-tasks"></i>
             </div>
             <h3 class="feature-title">Diverse Task Options</h3>
-            <p class="feature-desc">From data annotation to content creation, choose tasks that match your skills and interests. New tasks added daily.</p>
+            <p class="feature-desc">From data annotation to content creation, choose tasks that match your skills and interests. New high-paying opportunities added daily to maximize your earning potential.</p>
+            <button class="btn btn-primary">Learn More</button>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-lock"></i>
+            </div>
+            <h3 class="feature-title">Advanced Security</h3>
+            <p class="feature-desc">Military-grade encryption protects all your data and communications. Our privacy-first approach ensures your information remains confidential and secure at all times.</p>
             <button class="btn btn-primary">Learn More</button>
           </div>
           
@@ -943,8 +1181,17 @@
             <div class="feature-icon">
               <i class="fas fa-graduation-cap"></i>
             </div>
-            <h3 class="feature-title">Comprehensive Training</h3>
-            <p class="feature-desc">Our step-by-step training programme gets you earning quickly. Learn valuable AI skills while making money.</p>
+            <h3 class="feature-title">Personalized Learning</h3>
+            <p class="feature-desc">Our AI adapts to your unique preferences and learning style, creating a tailored experience that becomes more intelligent and responsive the more you use it.</p>
+            <button class="btn btn-primary">Learn More</button>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-headset"></i>
+            </div>
+            <h3 class="feature-title">Dedicated VIP Support</h3>
+            <p class="feature-desc">Enjoy personalized assistance from our expert team who will guide you through learning AI skills while maximizing your income potential. Premium support gets you results faster.</p>
             <button class="btn btn-primary">Learn More</button>
           </div>
         </div>
@@ -963,7 +1210,7 @@
         <div class="steps">
           <div class="step">
             <div class="step-number">1</div>
-            <h3 class="step-title">Register AI</h3>
+            <h3 class="step-title">Register</h3>
             <p class="step-desc">Create your account in minutes. No commitment required.</p>
           </div>
           
@@ -1052,33 +1299,33 @@
         
         <div class="testimonials-grid">
           <div class="testimonial-card">
-            <p class="testimonial-text">"Since joining AI Earnings UK, I've been making an extra £800-£1200 monthly. The Advanced plan paid for itself in the first week! Perfect around my university schedule."</p>
+            <p class="testimonial-text">"As a graphic designer, I've always been interested in AI art tools. This platform helped me monetize that interest, earning an extra £600-900 monthly while expanding my creative skills. The AI training was surprisingly intuitive!"</p>
             <div class="testimonial-author">
               <div class="author-avatar">
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" alt="User avatar">
               </div>
               <div class="author-info">
                 <h4>James Wilson</h4>
-                <p>Student, Manchester</p>
+                <p>Graphic Designer, Manchester</p>
               </div>
             </div>
           </div>
           
           <div class="testimonial-card">
-            <p class="testimonial-text">"As a mum of two, I needed flexible work. AI Earnings lets me earn during naps and after bedtime. I'm making £500-£700 monthly without compromising family time."</p>
+            <p class="testimonial-text">"Being a freelancer, income can be unpredictable. AI Earnings has provided a steady secondary revenue stream that complements my project work. I'm making £800-£1200 monthly with complete flexibility to work around my client schedule."</p>
             <div class="testimonial-author">
               <div class="author-avatar">
                 <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" alt="User avatar">
               </div>
               <div class="author-info">
                 <h4>Sarah Johnson</h4>
-                <p>Parent, Birmingham</p>
+                <p>Freelancer, Birmingham</p>
               </div>
             </div>
           </div>
           
           <div class="testimonial-card">
-            <p class="testimonial-text">"I started with the basic plan to test it out, but quickly upgraded to Advanced. The higher-paying tasks are worth it - I've replaced my full-time income in just 5 months!"</p>
+            <p class="testimonial-text">"After years in retail management, I wanted to transition into the tech sector. This platform gave me the perfect opportunity to learn AI skills while earning. I've replaced my full-time income in just 6 months and now work entirely remotely!"</p>
             <div class="testimonial-author">
               <div class="author-avatar">
                 <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" alt="User avatar">
@@ -1200,6 +1447,7 @@
             <h4 class="footer-heading">Quick Links</h4>
             <ul class="footer-links">
               <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+              <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
               <li><a href="#features"><i class="fas fa-chevron-right"></i> Features</a></li>
               <li><a href="#how-it-works"><i class="fas fa-chevron-right"></i> How It Works</a></li>
               <li><a href="#pricing"><i class="fas fa-chevron-right"></i> Earnings</a></li>
@@ -1295,6 +1543,25 @@
           item.classList.toggle('active');
         });
       });
+      
+      // Animate chart bars on scroll
+      const chartObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const bars = document.querySelectorAll('.chart-bar');
+            bars.forEach(bar => {
+              const height = bar.style.height;
+              bar.style.height = '0';
+              setTimeout(() => {
+                bar.style.height = height;
+              }, 100);
+            });
+            chartObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      
+      chartObserver.observe(document.querySelector('.chart-container'));
     </script>
   </body>
 </html>
