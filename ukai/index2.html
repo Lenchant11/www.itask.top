@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* 全局/////////////////////////////////////////////////////////////////////////////////////// */
+      html {
+        scroll-behavior: smooth;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      button {
+        border: none;
+      }
+      a {
+        text-decoration: none;
+        color: white;
+        font-variant: none;
+      }
+
+      h2 {
+        color: white;
+      }
+      p {
+        color: white;
+        font-size: 16px;
+      }
+      button {
+        font-size: 16px;
+        font-weight: 800;
+        color: white;
+        background: #c580f2;
+      }
+      li {
+        color: white;
+      }
+      ul li {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+      .section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .section_content {
+        width: 1170px;
+      }
+      /* header ////////////////////////////////////////////////////////////////////////////////////*/
+      .header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        background: #000000;
+        height: 108px;
+      }
+      .logo {
+        line-height: 50px;
+        height: 50px;
+        width: 20%;
+        color: white;
+        font-weight: 800;
+        font-size: 30px;
+      }
+      .content {
+        width: 100%;
+      }
+      .header_content {
+        width: 1170px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .menu {
+        width: 60%;
+        color: white;
+        list-style: none;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+      }
+      .menu li {
+        font-size: 16px;
+        font-weight: 800;
+      }
+      .header_right {
+        width: 20%;
+        display: flex;
+        justify-content: end;
+      }
+      .header_right_btn {
+        height: 58px;
+        width: 70%;
+
+        color: white;
+        font-weight: 800;
+      }
+
+      /* body ////////////////////////////////////////////////////////////////////////////////////*/
+      .website {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      /* section1 */
+      .section1 {
+        width: 100%;
+        background-color: black;
+        position: relative;
+        padding-top: 50px;
+        height: 700px;
+        flex-direction: column;
+        justify-content: start;
+      }
+      .section1_content1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .section1_content1_left {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        gap: 20px;
+        width: 60%;
+      }
+      .section1_right {
+        width: 40%;
+      }
+
+      .pre_title {
+        color: #c580f2;
+        font-size: 18px;
+      }
+      .section1_content1_left_title {
+        font-size: 54px;
+      }
+      .section1_content1_left_button {
+        margin-top: 30px;
+        width: 25%;
+        height: 66px;
+      }
+      .section1_right img {
+        width: 30px;
+        height: 30px;
+      }
+      .section1_right {
+        font-size: 18px;
+      }
+      .section1_right ul {
+        gap: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+      }
+      .section1_content2 {
+        position: absolute;
+        top: 500px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .section1_content2_img1 {
+        width: 547px;
+        height: 401px;
+      }
+      .section1_content2_img2 {
+        margin-top: 50px;
+        width: 254px;
+        height: 381px;
+      }
+      .section1_content2_img3 {
+        margin-top: 20px;
+        width: 250px;
+        height: 376px;
+      }
+      /* section2 */
+      .section2 {
+        margin-top: 200px;
+        height: 877px;
+        width: 100%;
+        background-color: white;
+      }
+      .section2_content1 {
+        display: flex;
+        justify-content: center;
+        gap: 60px;
+      }
+      .section2_content1_left {
+        width: 50%;
+      }
+      .section2_content1_right {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 50%;
+      }
+      .section2_content1_left_bottom_img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .section2_content1_left_img1 {
+        width: 561px;
+        height: 270px;
+        background-image: url(./images/happy-young-business-people-standing-in-the-office-and-looking-forward-to-success-in-the-office.jpg);
+        background-position: center;
+        background-size: cover;
+      }
+      .section2_content1_left_img2 {
+        background-color: white;
+        margin-left: 10px;
+        margin-top: -120px;
+        width: 230px;
+        padding: 20px;
+      }
+      .section2_content1_left_img3 {
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        margin-top: 30px;
+        margin-left: 20px;
+        width: 250px;
+        height: 347px;
+        background: url(./images/young-couple-in-office.jpg) no-repeat center;
+        background-size: cover;
+      }
+      #n {
+        color: black;
+        font-size: 30px;
+        font-weight: 800;
+      }
+      #n::after {
+        content: "+";
+        color: green;
+      }
+      .section2_content1_left_img3_content {
+        height: 30%;
+        gap: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        background: white;
+      }
+      .section2_content1_right_title {
+        color: black;
+        font-size: 40px;
+      }
+      .section2_content1_right_text {
+        color: #7a7a7a;
+        font-size: 16px;
+      }
+      .section2_content1_right_imgbox {
+        margin-top: 50px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .left_box {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 20px;
+        width: 50%;
+      }
+      .right_box {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 20px;
+        width: 50%;
+      }
+      .left_box img {
+        width: 70px;
+        height: 70px;
+        background-color: #c580f2;
+      }
+      .left_box p {
+        font-size: 16px;
+        color: black;
+      }
+      .left_box h3 {
+        font-size: 25px;
+      }
+      .right_box img {
+        width: 70px;
+        height: 70px;
+        background-color: #c580f2;
+      }
+      .right_box p {
+        font-size: 16px;
+        color: black;
+      }
+      .right_box h3 {
+        font-size: 25px;
+      }
+      .section2_content1_right button {
+        width: 35%;
+        height: 70px;
+        margin-top: 50px;
+      }
+      /* section3 */
+      .section3 {
+        align-items: start;
+      }
+      .section3_left {
+        height: 831px;
+        background: #1b0035;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+      }
+      .section3_right {
+        background: url(./images/selective-focus-of-recruiters-looking-at-employee-showing-clipboard-during-job-interview.jpg)
+          no-repeat center;
+        background-color: pink;
+        height: 911px;
+        width: 50%;
+        background-size: cover;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        align-items: center;
+        box-sizing: border-box;
+        padding-bottom: 40px;
+      }
+      .section3_left_content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+        width: 60%;
+        gap: 20px;
+      }
+      .section3_left_content h2 {
+        font-size: 40px;
+      }
+      .section3_left_content .price {
+        font-size: 30px;
+        color: #dfb3f2;
+      }
+      .section3_left_content img {
+        width: 15px;
+        height: 15px;
+      }
+      .section3_left_content ul li a {
+        font-size: 16px;
+      }
+      .section3_left_content ul li {
+        margin-top: 30px;
+      }
+      .section3_left_content ul {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+      }
+      .section3_right_content {
+        display: flex;
+        justify-content: space-between;
+        height: 150px;
+        width: 90%;
+      }
+      .section3_right_content_left {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 48%;
+        background-color: white;
+      }
+      .section3_right_content_right {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        align-items: center;
+        width: 48%;
+        background-color: white;
+      }
+      /* #region 圆环进度条 */
+      .progress-container {
+        transform: scale(0.5);
+        position: relative;
+        width: 200px;
+        height: 200px;
+      }
+
+      svg {
+        transform: rotate(-90deg); /* 让圆从顶部开始 */
+      }
+
+      .progress-bg {
+        stroke: #eee; /* 未完成的背景色 */
+        stroke-width: 15;
+      }
+
+      .progress-bar {
+        stroke: #9530d9; /* 已完成的颜色 */
+        stroke-width: 15;
+        stroke-linecap: round;
+        stroke-dasharray: 565.48; /* 2πr, 半径=90 */
+        stroke-dashoffset: 565.48; /* 初始全空 */
+        transition: stroke-dashoffset 1s linear;
+      }
+
+      .progress-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 50px;
+        font-weight: bold;
+        color: #333;
+      }
+      /* #endregion */
+      .section3_right_content_left h2 {
+        color: black;
+      }
+      .section3_right_content_right h2 {
+        color: black;
+      }
+
+      /* section4 */
+      .section4 {
+        height: 748px;
+        flex-direction: column;
+      }
+      .section4_content1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+      .section4_content1 h2 {
+        font-size: 40px;
+        color: black;
+      }
+      .section4_content1 p:nth-child(3) {
+        font-size: 16px;
+        color: black;
+      }
+      .section4_content2 {
+        margin-top: 100px;
+        height: 303px;
+        display: flex;
+        justify-content: space-between !important;
+        align-items: stretch !important;
+      }
+
+      .section4_content2_box1 {
+        width: 32%;
+        padding-bottom: 20px;
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        background: url(./images/banker-working-at-the-office.jpg) no-repeat
+          center;
+        background-size: cover;
+      }
+      .section4_content2 .section4_content2_box1_content {
+        gap: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 85%;
+        height: 20%;
+        background-color: white;
+      }
+      .section4_content2_box1_content img {
+        width: 35px;
+        height: 35px;
+      }
+      .section4_content2_box1_content h3 {
+        font-size: 20px;
+      }
+      .section4_content2_box2 {
+        padding: 30px;
+        width: 32%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        border: 1px solid black;
+      }
+      .section4_content2_box2 button {
+        margin-top: 40px;
+        height: 45px;
+      }
+      .section4_content2_box3 {
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        width: 32%;
+        border: 1px solid black;
+      }
+      .section4_content2_box3 button {
+        margin-top: 40px;
+        height: 45px;
+      }
+      .section4_content2_box2 .top {
+        padding-bottom: 15px;
+        border-bottom: 1px solid black;
+        gap: 30px;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+      }
+      .section4_content2_box3 .top {
+        padding-bottom: 15px;
+        border-bottom: 1px solid black;
+        gap: 30px;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+      }
+      .top img {
+        width: 35px;
+        height: 35px;
+      }
+      .top h3 {
+        font-size: 24px;
+      }
+      .middle {
+        margin-top: 15px;
+        font-size: 16px;
+      }
+      /* section5 */
+      .section5 {
+        height: 387px;
+      }
+      .section5 .left {
+        display: flex;
+        gap: 20px;
+        flex-direction: column;
+        align-items: start;
+        justify-content: center;
+        width: 35%;
+      }
+      .section5 .left h2 {
+        color: black;
+        font-size: 40px;
+      }
+      .section5 .right {
+        height: 297px;
+        display: flex;
+        justify-content: space-between;
+        width: 64%;
+      }
+      .section5_content1 {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .section5 .right .box1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        width: 48%;
+        padding: 40px;
+      }
+      .section5 .right .box2 {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        width: 48%;
+        padding: 40px;
+      }
+      .section5 .right .box1 p {
+        color: black;
+        font-size: 16px;
+        line-height: 25px;
+      }
+      .section5 .right .box2 p {
+        color: black;
+        font-size: 16px;
+        line-height: 25px;
+      }
+      .review_author {
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        gap: 20px;
+        align-items: center;
+      }
+      .review_author img {
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+      }
+
+      /* section6 */
+      .section6 {
+        position: relative;
+        height: 432px;
+        background-size: cover;
+        background: url(./images/office-workers-eating-salad-in-the-office.jpg)
+          no-repeat center fixed;
+      }
+      .section6_content1 {
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+      .section6_content1 h2 {
+        font-size: 40px;
+      }
+      .section6_content1 button {
+        width: 15%;
+        height: 66px;
+      }
+      .section6::after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #00000099;
+      }
+
+      /* foot///////////////////////////////////////////////////////// */
+      .foot {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #1b0035;
+        height: 562px;
+      }
+      .section_content1 {
+        margin-bottom: 50px;
+        padding-bottom: 50px;
+        border-bottom: 1px solid #cccccc30;
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+      }
+      .section_content1_left {
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: start;
+        width: 49%;
+      }
+      .section_content1_left .top {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+        gap: 20px;
+      }
+      .section_content1_left .top p {
+        width: 70%;
+      }
+      .section_content1_left .bottom {
+        width: 100%;
+      }
+      .section_content1_left .bottom img {
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+        background-color: #c580f2;
+      }
+      .section_content1_left .bottom ul {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .section_content1_left .bottom ul li {
+        width: 50%;
+        display: flex;
+        justify-content: start;
+        gap: 10px;
+        align-items: center;
+      }
+      .section_content1_right {
+        display: flex;
+        justify-content: space-around;
+        width: 49%;
+      }
+      .section_content1_right ul {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: start;
+      }
+      .section_content1_right ul li img {
+        width: 14px;
+        height: 14px;
+      }
+      .foot .logo {
+        width: 100%;
+      }
+      /* 手机端优化 */
+      /* 手机端元素 电脑隐藏*/
+      .mobile_menu {
+        width: 20px;
+        height: 20px;
+        display: none;
+      }
+      .mobile_menu_content {
+        display: none;
+      }
+      @media (max-width: 768px) {
+        /* 手机导航 */
+        .mobile_menu_content {
+          transition: all 0.5s linear;
+          padding: 30px;
+          display: flex;
+          flex-direction: column;
+          align-items: start;
+          z-index: 999;
+          gap: 30px;
+          position: fixed;
+          top: 0;
+          left: -100%;
+          width: 90vw;
+          background-color: black;
+          height: 200vh;
+        }
+        .mobile_menu_content .close {
+          position: absolute;
+          right: 10px;
+          top: 10px;
+          font-size: 30px;
+        }
+
+        /* 全局 */
+        .section_content {
+          padding: 0 10px !important;
+          width: 100% !important;
+        }
+        .pre_title {
+          font-size: 16px !important;
+        }
+        p {
+          font-size: 16px !important;
+        }
+        button {
+          font-size: 13px !important;
+          font-weight: normal !important;
+
+          height: 30px !important;
+        }
+        /* 页眉 */
+        .header {
+          padding: 0 15px;
+          height: 50px;
+        }
+        .header_content {
+          justify-content: space-between;
+          width: 100%;
+        }
+        .menu {
+          display: none;
+        }
+        .logo {
+          width: 50%;
+          font-size: 20px;
+        }
+        .header_right {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          width: 50%;
+        }
+        .header_right_btn {
+          width: 100px;
+          font-size: 10px;
+          height: 30px;
+        }
+        .mobile_menu {
+          display: block;
+        }
+        /* body */
+        /* section1 */
+        .section1 {
+          height: auto;
+          padding-bottom: 30px;
+        }
+        .section1_content1 {
+          flex-wrap: wrap;
+        }
+        .section1_content1_left {
+          width: 100%;
+        }
+        .section1_content1_left_title {
+          font-size: 30px;
+        }
+        .section1_content1_left_button {
+          width: 100px;
+        }
+        .section1_right {
+          margin-top: 30px;
+          width: 100%;
+        }
+        .section1_right ul li {
+          font-size: 16px;
+        }
+        .section1_content2 {
+          justify-content: center;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+        .section1_content2_img1 {
+          margin-top: 100px;
+          width: 80%;
+          height: auto;
+        }
+        .section1_content2_img2 {
+          margin-top: 20px;
+          width: 45%;
+          height: auto;
+        }
+        .section1_content2_img3 {
+          margin-top: 20px;
+          width: 45%;
+          height: auto;
+        }
+
+        /* section2 */
+        .section2 {
+          height: auto;
+          margin-top: 650px;
+        }
+        .section2_content1 {
+          flex-wrap: wrap;
+        }
+        .section2_content1_left {
+          width: 100%;
+        }
+        .section2_content1_left_img1 {
+          width: 100%;
+        }
+        .section2_content1_left_img2 {
+          width: 55%;
+        }
+        .section2_content1_left_img3 {
+          width: 45%;
+        }
+        .section2_content1_right {
+          width: 100%;
+        }
+        .section2_content1_right_title {
+          font-size: 30px;
+        }
+        .section2_content1_right_imgbox {
+          gap: 40px;
+        }
+        .left_box h3 {
+          font-size: 20px;
+        }
+        .right_box h3 {
+          font-size: 20px;
+        }
+        /* section3 */
+        .section3 {
+          height: auto;
+          flex-wrap: wrap;
+          margin-top: 100px;
+        }
+        .section3_left {
+          padding: 20px;
+          height: 600px;
+          width: 100%;
+        }
+        .section3_right {
+          width: 100%;
+        }
+        .section3_left_content h2 {
+          font-size: 30px;
+        }
+        .section3_left_content {
+          width: 100%;
+        }
+
+        .section3_right_content_left {
+          width: 100%;
+        }
+        .section3_right_content_right {
+          width: 100%;
+        }
+
+        .section3_right_content {
+          flex-wrap: wrap;
+          height: auto;
+          gap: 20px;
+        }
+        /* section4 */
+        .section4 {
+          margin-top: 50px;
+          height: auto;
+        }
+        .section4_content1 h2 {
+          font-size: 30px;
+        }
+        .section4_content1 p {
+          text-align: center;
+        }
+        .section4_content2 {
+          margin-top: 40px;
+          flex-wrap: wrap;
+          height: auto;
+        }
+        .section4_content2_box1 {
+          height: 300px;
+          width: 100%;
+        }
+        .section4_content2_box2 {
+          height: 300px;
+          width: 100%;
+        }
+        .section4_content2_box3 {
+          height: 300px;
+          width: 100%;
+        }
+        /* section5 */
+        .section5 {
+          margin-top: 50px;
+          height: auto;
+        }
+        .section5_content1 {
+          flex-wrap: wrap;
+        }
+        .section5_content1 .left {
+          width: 100%;
+        }
+        .section5_content1 .right {
+          margin-top: 30px;
+          width: 100%;
+        }
+        .section5_content1 .box1 {
+          padding: 0 10px !important;
+        }
+        .section5_content1 .box2 {
+          padding: 0 10px !important;
+        }
+        .section5_content1 h2 {
+          font-size: 30px !important;
+        }
+        /* section6 */
+        .section6 {
+          height: 300px;
+        }
+        .section6_content1 h2 {
+          text-align: center;
+          font-size: 30px;
+        }
+        .section6 button {
+          width: 150px;
+        }
+        /* foot */
+        .foot {
+          height: auto;
+          padding: 50px 10px;
+        }
+        .section_content1 {
+          flex-wrap: wrap;
+        }
+        .section_content1_left {
+          height: auto;
+          width: 100%;
+        }
+        .section_content1_left .top p {
+          width: 100%;
+        }
+        .section_content1_left .bottom {
+          margin-top: 50px;
+        }
+        .section_content1_right {
+          padding-bottom: 30px;
+          margin-top: 50px;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="content header_content">
+        <h1 class="logo">Sky Forces</h1>
+
+        <ul class="menu">
+          <li><a href="">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#position">Position</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <ul class="mobile_menu_content">
+          <li><a href="">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#position">Position</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li class="close">×</li>
+        </ul>
+        <div class="header_right">
+          <img class="mobile_menu" src="./images/menu.svg" alt="" />
+          <button class="header_right_btn">Contact Us</button>
+        </div>
+      </div>
+    </div>
+    <div class="website">
+      <div class="content">
+        <div class="section section1">
+          <div class="section_content section1_content1">
+            <div class="section1_content1_left">
+              <p class="pre_title">
+                Make your work and life more efficient, enjoy lightning-fast
+                response, intelligent features and VIP exclusive services.
+              </p>
+              <h2 class="title section1_content1_left_title">
+                🚀 Unlock Future Productivity - Advanced AI Assistant Fully
+                Upgraded
+              </h2>
+              <p>
+                Enjoy the perfect combination of career success, comfort, and
+                ease, without ever leaving your home.
+              </p>
+              <button class="section1_content1_left_button">Apply Now</button>
+            </div>
+            <div class="section1_right">
+              <ul>
+                <li>
+                  <img src="./images/check.svg" alt="" />⚡ Ultra-fast response,
+                  no more waiting
+                </li>
+                <li>
+                  <img src="./images/check.svg" alt="" />💡 Exclusive feature,
+                  meeting personalized needs
+                </li>
+                <li>
+                  <img src="./images/check.svg" alt="" />VIP customer service,
+                  providing full companionship throughout the process
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="section_content section1_content2">
+            <img
+              class="section1_content2_img1"
+              src="./images/group-of-architects-working-at-office.jpg"
+              alt=""
+            />
+            <img
+              class="section1_content2_img2"
+              src="./images/handsome-businessman-is-looking-at-camera-while-his-colleagues-are-working-on-coworking-place-.jpg"
+              alt=""
+            />
+            <img
+              class="section1_content2_img3"
+              src="./images/happy-young-business-colleagues-in-modern-office.jpg"
+              alt=""
+            />
+          </div>
+        </div>
+        <div id="about" class="section section2">
+          <div class="section_content section2_content1">
+            <div class="section2_content1_left">
+              <div class="section2_content1_left_img1"></div>
+              <div class="section2_content1_left_bottom_img">
+                <img
+                  class="section2_content1_left_img2"
+                  src="./images/african-manager-working-at-office.jpg"
+                  alt=""
+                />
+                <div class="section2_content1_left_img3">
+                  <!-- <div class="section2_content1_left_img3_content">
+                    <p id="n">100</p>
+                    <p style="color: black">Job Recruitment</p>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="section2_content1_right">
+              <h2 class="section2_content1_right_title">Who we are ?</h2>
+              <p class="section2_content1_right_text">
+                We are a team passionate about artificial intelligence and
+                efficiency tools. We believe that AI is not just a tool; it is a
+                partner in future life and work.
+              </p>
+              <div class="section2_content1_right_imgbox">
+                <div class="left_box">
+                  <img style="padding: 15px" src="./images/网络.svg" alt="" />
+                  <h3>Covering over ten thousand users worldwide</h3>
+                </div>
+                <div class="right_box">
+                  <img style="padding: 15px" src="./images/迭代.svg" alt="" />
+                  <h3>After hundreds of iterations and optimizations</h3>
+                </div>
+              </div>
+              <button>Enquiry Now</button>
+            </div>
+          </div>
+        </div>
+        <div id="position" class="section section3">
+          <div class="section3_left">
+            <div class="section3_left_content">
+              <h2>🏆 Why choose our advanced version of AI?</h2>
+              <p class="pre_title">
+                There are countless AI tools available in the market, but few of
+                them can balance speed, functionality and service. Our premium
+                version leads in the following aspects:
+              </p>
+              <p class="price">£220 - £340 (per day)</p>
+              <ul>
+                <li>
+                  <img src="./images/arrow.svg" alt="" /><a href="#"
+                    >Faster: Prioritize computing resources, no lag during peak
+                    hours.</a
+                  >
+                </li>
+                <li>
+                  <img src="./images/arrow.svg" alt="" /><a href="#"
+                    >Stronger: Unlocks all the features, meeting diverse needs
+                    ranging from writing, translation to data processing.</a
+                  >
+                </li>
+                <li>
+                  <img src="./images/arrow.svg" alt="" /><a href="#"
+                    >Better Understanding of You: AI can learn and remember your
+                    preferences, making it more intelligent and more
+                    considerate.</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="section3_right">
+            <div class="section3_right_content">
+              <div class="section3_right_content_left">
+                <h2>No Delay</h2>
+                <div class="circle_progress">
+                  <div class="progress-container">
+                    <svg width="200" height="200">
+                      <circle
+                        class="progress-bg"
+                        cx="100"
+                        cy="100"
+                        r="90"
+                        fill="none"
+                      ></circle>
+                      <circle
+                        class="progress-bar"
+                        cx="100"
+                        cy="100"
+                        r="90"
+                        fill="none"
+                      ></circle>
+                    </svg>
+                    <div class="progress-text">0%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="section3_right_content_right">
+                <h2>Customer Praise</h2>
+                <div class="circle_progress">
+                  <div class="progress-container">
+                    <svg width="200" height="200">
+                      <circle
+                        class="progress-bg"
+                        cx="100"
+                        cy="100"
+                        r="90"
+                        fill="none"
+                      ></circle>
+                      <circle
+                        class="progress-bar"
+                        cx="100"
+                        cy="100"
+                        r="90"
+                        fill="none"
+                      ></circle>
+                    </svg>
+                    <div class="progress-text">0%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="features" class="section section4">
+          <div class="section_content section4_content1">
+            <p class="pre_title"></p>
+            <h2 style="text-align: center">
+              ✨ What can the premium version bring to you?
+            </h2>
+            <!-- <p>
+              Join Us for Flexible Jobs and Exciting Bonuses, Ideal for
+              Work-Life Balance!
+            </p> -->
+          </div>
+          <div class="section_content section4_content2">
+            <div class="section4_content2_box1">
+              <div class="section4_content2_box1_content">
+                <h3>🎯 Personalized Recommendation</h3>
+              </div>
+            </div>
+            <div class="section4_content2_box2">
+              <div class="top">
+                <!-- <img src="./images/clock.svg" alt="" /> -->
+                <h3>⚡ Ultra-fast Lane</h3>
+              </div>
+              <div class="middle">
+                Priority access during peak hours, with response speed increased
+                by 3 times.
+              </div>
+              <button>Learn More</button>
+            </div>
+            <div class="section4_content2_box3">
+              <div class="top">
+                <!-- <img src="./images/clock.svg" alt="" /> -->
+                <h3>🔒 Safety Guarantee</h3>
+              </div>
+              <div class="middle">
+                All data is encrypted for secure privacy protection.
+              </div>
+              <button>Learn More</button>
+            </div>
+          </div>
+        </div>
+        <div id="testimonials" class="section section5">
+          <div class="section_content section5_content1">
+            <div class="left">
+              <p class="pre_title">Testimonials</p>
+              <h2>The Successful Story Of Our Client</h2>
+            </div>
+            <div class="right">
+              <div class="box1">
+                <p>
+                  "The customer service was very patient and helped me solve the
+                  problem of connecting to the API. It felt very professional."
+                </p>
+                <div class="review_author">
+                  <img
+                    src="./images/contemporary-businesswoman-posing-in-office-300x295.jpg"
+                    alt=""
+                  />
+                  <div>
+                    <h3>Miya</h3>
+                    <p>Marketing Analyst</p>
+                  </div>
+                </div>
+              </div>
+              <div class="box2">
+                <p>
+                  "Previously, it would take me two days to write a business
+                  plan. Now, I can finish it in just three hours, and my
+                  efficiency has doubled!"
+                </p>
+                <div class="review_author">
+                  <img
+                    src="./images/african-businessman-posing-in-office-1-300x295.jpg"
+                    alt=""
+                  />
+                  <div>
+                    <h3>Shawn</h3>
+                    <p>Review Specialist</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="contact" class="section section6">
+          <div class="section_content section6_content1">
+            <h2>Don't Wait! Become A Part Of Our Team Today!</h2>
+            <p style="text-align: center">
+              "💰 Do you want your funds to yield results within 30 days? The
+              first 1000 participants can enjoy exclusive VIP experience + bonus
+              🚀 New investment plan + stable returns + 0 risk [High returns /
+              Side business / New market] We are looking for people who are
+              interested in [investment / wealth growth]. You can earn up to
+              £340 per day at home! Interested? Please send a message or click
+              to sign up."
+            </p>
+            <button>Join Us Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section foot">
+      <div class="section_content section_content1">
+        <div class="section_content1_left">
+          <div class="top">
+            <h1 class="logo">Sky Forces</h1>
+            <p>
+              "💰 Do you want your funds to yield results within 30 days? The
+              first 1,000 participants can enjoy exclusive VIP experience +
+              bonus 🚀 A brand-new investment plan + stable returns + 0 risks"
+            </p>
+          </div>
+          <div class="bottom">
+            <ul>
+              <li>
+                <img src="./images/telphone (1).svg" alt="" />
+                <p>44 20 7389 7100</p>
+              </li>
+              <li>
+                <img src="./images/mail.svg" alt="" />
+                <p>support@jobiloflow.com</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="section_content1_right">
+          <div class="menu_list1">
+            <h2>Quick Links</h2>
+            <ul>
+              <li>
+                <img src="./images/arrow (1).svg" alt="" /><a href="#home"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <img src="./images/arrow (1).svg" alt="" /><a href="#about"
+                  >About</a
+                >
+              </li>
+              <li>
+                <img src="./images/arrow (1).svg" alt="" /><a href="#features"
+                  >Features</a
+                >
+              </li>
+              <li>
+                <img src="./images/arrow (1).svg" alt="" /><a href="#position"
+                  >Position</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="menu_list2">
+            <h2>Business Hour</h2>
+            <ul>
+              <li>
+                <a href="">Monday - Saturday</a>
+              </li>
+              <li>
+                <a href="">9am -6pm</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p>2024 © All rights reserved by jobiloflow.com</p>
+    </div>
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script>
+    // 数字变化动画
+    // anime({
+    //   targets: { value: 0 },
+    //   value: 2364,
+    //   round: 1,
+    //   duration: 3000,
+    //   easing: "easeOutExpo",
+    //   update: function (anim) {
+    //     document.getElementById("n").textContent = Math.round(
+    //       anim.animations[0].currentValue
+    //     ).toLocaleString();
+    //   },
+    // });
+
+    // 环形进度条动画
+    function animateProgress(targets) {
+      const circles = document.querySelectorAll(".progress-bar");
+      const texts = document.querySelectorAll(".progress-text");
+
+      circles.forEach((circle, index) => {
+        const target = targets[index]; // 每个圆对应一个目标值
+        const radius = 90;
+        const circumference = 2 * Math.PI * radius;
+
+        // 初始化 stroke
+        circle.style.strokeDasharray = circumference;
+        circle.style.strokeDashoffset = circumference;
+
+        // 用 anime.js 控制【圆环 + 数字】同步动画
+        anime({
+          targets: { value: 0 },
+          value: target,
+          duration: 2000,
+          easing: "easeOutExpo",
+          update: function (anim) {
+            const progress = anim.animations[0].currentValue;
+
+            // 更新圆环
+            const offset = circumference - (progress / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+
+            // 更新文字
+            texts[index].textContent = Math.round(progress) + "%";
+          },
+        });
+      });
+    }
+
+    // 执行动画（两个值）
+    animateProgress([96, 97]);
+
+    //手机端菜单交互
+    const mobile_menu_btn = document.querySelector(".mobile_menu");
+    const mobile_menu_content = document.querySelector(".mobile_menu_content");
+    const mobile_menu_items = document.querySelectorAll(
+      ".mobile_menu_content li"
+    );
+    const mobile_menu_close = document.querySelector(
+      ".mobile_menu_content .close"
+    );
+    mobile_menu_close.addEventListener("click", () => {
+      mobile_menu_content.style.left = "-100%";
+    });
+    mobile_menu_btn.addEventListener("click", () => {
+      mobile_menu_content.style.left = "0";
+    });
+    mobile_menu_items.forEach((item) => {
+      item.addEventListener("click", () => {
+        mobile_menu_close.click();
+      });
+    });
+  </script>
+</html>
